@@ -1,53 +1,72 @@
-#define _CRT_SECURE_NO_WARNINGS
-#define _for(i,a,b) for(int i=(a);(i)<(b);(i)++)
-#define TIME 25
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
+C#, VB, Perl, Swift, Prolog, Javascript, Pascal, HTML, CSS, JS
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+#define _for(i,a,b) for(int i=(a) ;i<(b) ;i++)
+#include <stdio.h>
 #include <iostream>
-#include <cstdio>
-#include <string>
-#include <iomanip>
-#include <map>
-#include <tuple>
-#include <vector>
+
 using namespace std;
 
-struct Vec2
+int main()
 {
-public:
-	int x=0, y=0;
-	Vec2(int x, int y) {
-		this->x = x;
-		this->y = y;
-	}
-	Vec2() {};
-	Vec2  operator +(const Vec2 &arg) {
-		Vec2 tmp(x + arg.x, y + arg.y);
-		return  tmp;
-	}
-	bool const operator < (const Vec2 &b) const {
-		return((y < b.y) || ( (y == b.y) && (x < b.x) ) );
-	}
-	bool const operator >(const Vec2 &b) const {
-		return((y > b.y) || ((y == b.y) && (x > b.x)));
-	}
-	bool const operator ==(const Vec2 &b) const {
-		return(x == b.x&&y == b.y);
-	}
-}; 
+    int arr[6][5];
+    bool isLine=false;
+    
+    _for(y,0,5){
+        _for(x,0,6){
+            cin>>arr[y][x];
+        }
+    }
+    
+    _for(_y,0,5){
+        int lastX=-1,lastY,cntr=1;
+        _for(_x,0,6){
+            
+            if(lastX!=-1){
+                if(arr[lastY][lastX]==arr[_y][_x])
+                    cntr++;
+                else
+                    cntr=0;
+            }
+            if(cntr>=3){
+                isLine=true;
+                goto doubleBreak;
+            }
+            lastX=_x;lastY=_y;
 
-map<Vec2, int> arr; 
+        }
+    }
 
-int main() { 
-	_for(y, 0, 5) {
-		_for(x, 0, 5) {
-			int tmp; cin >> tmp;
-			Vec2 vec(x, y);
-			arr[vec] = tmp;
-		}
-	}
-	_for(y, 0, 5) {
-		_for(x, 0, 5) {
-			
-		}
-	}
-	return 0;
+    doubleBreak:
+    
+    if(!isLine){
+        _for(_x_,0,6){
+        int lastX=-1,lastY,cntr=1;
+        _for(_y_,0,5){
+            
+            if(lastX!=-1){
+                if(arr[lastY][lastX]==arr[_y_][_x_])
+                    cntr++;
+                else
+                    cntr=0;
+            }
+            if(cntr>=3){
+                isLine=true;
+                goto doubleBreak;
+            }
+            lastX=_x_;lastY=_y_;
+
+        }
+    }
+
+    }
+    
+    if(isLine) cout<<"Yes"<<endl;
+    else cout<<"No"<<endl;
+    return 0;
 }
