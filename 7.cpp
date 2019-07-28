@@ -8,10 +8,10 @@
 using namespace std;
 
 int main()
-{    
+{
 	ios::sync_with_stdio(0);
 	cin.tie(0);
-	
+
 	int T; cin >> T;
 	while (T--)
 	{
@@ -22,17 +22,17 @@ int main()
 			int tmp; cin >> tmp;
 			arr.push_back(tmp);
 		}
-		
+
 		while (arr.size() > 1) {
 			vector<int> tmp;
 			tmp.reserve(23);
 			_for(i, 0, arr.size() - 1)
 				tmp.emplace_back(arr[i + 1] - arr[i]);
-			arr = tmp; 
+			arr = tmp;
 		}
-		cout << arr[0]<<endl;
+		cout << arr[0] <<"\n";
 	}
+	
 
 	return 0;
 }
-
