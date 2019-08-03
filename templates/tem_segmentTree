@@ -1,0 +1,60 @@
+#define _for(i,a,b) for((i)=(a);(i)<(b);(i)++)
+#define MAXN (100)
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+
+struct  Node
+{
+	int l, r;
+	int val;
+	bool isLeaf=false;
+	Node *leftNode, *rightNode;
+private:
+	int merge(int a, int b) { return fmax(a, b); }
+	int merge(Node *r, Node *l) { return merge(r->val, l->val); }
+public:
+	Node(int l, int r) {
+		printf("%d,%d\n", l, r);
+		this->l = l; this->r = r;
+		if (r == l) {
+			this->isLeaf = true;
+			return;
+		}
+
+		int m = (l + r) >> 1;
+		this->leftNode = &Node(l,m);
+		this->rightNode = &Node(m + 1, r);
+		this->val = merge(leftNode, rightNode);
+	}
+
+	void Update(Node *rt, int i, int v) {
+		if (rt->isLeaf) {
+			rt->val = v;
+			return;
+		}
+
+		int m = (rt->l + rt->r) >> 1;
+		if (i <= m) Update(rt->rightNode, i, v);
+		else Update(rt->leftNode, i, v);
+		rt->val = merge(rt->leftNode, rt->rightNode);
+	}
+	void Query(Node *rt, int l, int r,int &ans) {
+		if (rt->isLeaf) {
+			ans = merge(ans, rt->val);
+			return;
+		}
+		int m = (rt->l + rt->r) >> 1;
+		if (r <= m) Query(rt->leftNode, l, r, ans);
+		else if (r > m) Query(rt->rightNode, l, r, ans);
+		else {
+			Query(rt->leftNode, l, m,ans);
+			Query(rt->rightNode, m + 1, r, ans);
+		}
+	}
+};
+
+int main() {
+	Node(0, 8);
+	return 0;
+}
