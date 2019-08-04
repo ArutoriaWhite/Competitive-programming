@@ -1,60 +1,51 @@
-#define _for(i,a,b) for((i)=(a);(i)<(b);(i)++)
-#define MAXN (100)
-#include <iostream>
-#include <cstdio>
 #include <algorithm>
+using namespace std;
 
-struct  Node
+struct Node
 {
-	int l, r;
+	bool isLeaf;
 	int val;
-	bool isLeaf=false;
-	Node *leftNode, *rightNode;
+	int r, l;
+	Node *rightNode, *leftNode,*root;
 private:
-	int merge(int a, int b) { return fmax(a, b); }
-	int merge(Node *r, Node *l) { return merge(r->val, l->val); }
-public:
-	Node(int l, int r) {
-		printf("%d,%d\n", l, r);
-		this->l = l; this->r = r;
-		if (r == l) {
+	int ans;
+	int merge(int v1, int v2) { return(min(v1, v2)); }
+	int merge(Node *n1, Node *n2) { return (merge(n1->val, n2->val)); }
+
+	Node(int l, int r, Node *rt) {
+		this->root = rt;
+		if (l == r) {
 			this->isLeaf = true;
 			return;
 		}
-
+		this->l = l; this->r = r;
 		int m = (l + r) >> 1;
-		this->leftNode = &Node(l,m);
-		this->rightNode = &Node(m + 1, r);
-		this->val = merge(leftNode, rightNode);
+		this->rightNode = &Node(l, m, root);
+		this->leftNode = &Node(m + 1, r, root);
+		this->val = merge(rightNode, leftNode);
 	}
 
-	void Update(Node *rt, int i, int v) {
-		if (rt->isLeaf) {
-			rt->val = v;
-			return;
+public:
+	void Update(Node* n, int i, int val) {
+		if (n->isLeaf) n->val = val;
+		else
+		{
+			int m = (n->r + n->l) >> 1;
+			if (i <= m) Update(n, i, val);
+			else Update(n, i, val);
 		}
 
-		int m = (rt->l + rt->r) >> 1;
-		if (i <= m) Update(rt->rightNode, i, v);
-		else Update(rt->leftNode, i, v);
-		rt->val = merge(rt->leftNode, rt->rightNode);
 	}
-	void Query(Node *rt, int l, int r,int &ans) {
-		if (rt->isLeaf) {
-			ans = merge(ans, rt->val);
-			return;
-		}
-		int m = (rt->l + rt->r) >> 1;
-		if (r <= m) Query(rt->leftNode, l, r, ans);
-		else if (r > m) Query(rt->rightNode, l, r, ans);
+	int serching(Node *root,int l,int r){
+		if (root->isLeaf) return root->val;
 		else {
-			Query(rt->leftNode, l, m,ans);
-			Query(rt->rightNode, m + 1, r, ans);
+			int m = (l + r) >> 1;
+			if (r <= m) return serching(root,l, r);
+			else if (l > m) return serching(root, l, r);
+			else {
+				return merge(serching(root, l, m), serching(root, m + 1, r));
+			}
 		}
 	}
-};
 
-int main() {
-	Node(0, 8);
-	return 0;
-}
+};
