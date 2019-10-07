@@ -12,6 +12,7 @@ struct Q{
 
     inline bool operator < ( const Q &b)
     {
+    //same time od
         if( m==b.m)
         {
             if( b.od) return true;
