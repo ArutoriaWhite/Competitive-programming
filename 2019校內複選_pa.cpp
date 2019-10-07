@@ -12,13 +12,9 @@ struct Q{
 
     inline bool operator < ( const Q &b)
     {
-    //same time od
-        if( m==b.m)
-        {
-            if( b.od) return true;
-            return l > b.l;
-        }
-        return m<b.m;
+        if ( m < b.m) return 1;
+        if ( m+ od < b.m+ od) return 1;
+        return r<b.r; 
     }
 
 } qs[maxQ];
