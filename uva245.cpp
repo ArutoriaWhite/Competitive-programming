@@ -3,7 +3,7 @@ using namespace std;
 #define maxN 10000000
 
 int to[maxN], val[maxN];
-int rear, top; //rear haven't used
+int rear, top; //rear: haven't used
 inline void init()
 {
     rear=0;
@@ -27,10 +27,10 @@ inline void mv_front( int i)
 }
 inline void push_front( int x)
 {
+    rear++;
     to[rear] = top;
     val[rear] = x;
     top = rear;
-    rear++;
 }
 
 int main()
