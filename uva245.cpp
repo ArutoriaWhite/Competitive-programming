@@ -27,7 +27,7 @@ inline void mv_front( int i)
     to[cur]=top;
     top=cur;
 }
-inline void push_front( int x)
+inline void push_front( string &x)
 {
     rear++;
     to[rear] = top;
@@ -43,16 +43,21 @@ inline bool isNum( char &c)
 {
     return ('0'<=c&&c<='9');
 }
-inline int toN( char &c)
+inline int toNum( char &c)
 {
     return (c-'0');
 }
 
 int main()
 {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
     string s;
     while (getline(cin,s))
     {
+        if (s=="0") break;
+        
         int len=s.size();
         for( int i=0; i<len; i++)
         {
@@ -66,21 +71,28 @@ int main()
                 }
                 i=j-1;
                 push_front(letter);
-            }
-            else (isNum(s[i]))
+                cout << letter;
+            } 
+            else if(isNum(s[i]))
             {
-                int sum=0;
-                int j;
-                for( j=i,t=1; isNum(s[j]); j++,t*=10)
+                int num[10], j, r, sum=0;
+                for( j=i,r=0; isNum(s[j]); j++)
                 {
-                    sum += toNum(s[i])*t;
+                    num[r++] = toNum(s[j]);
                 }
-                int realsum=0;
-                while (sum>0)
+                for( int t=1; r>0; t*=10)
                 {
-
+                    sum += num[--r]*t;
                 }
+                i=j-1;
+                cout << val[at(sum)];
+                mv_front(sum);
+            }
+            else
+            {
+                cout << s[i];
             }
         }
+        cout << '\n';
     }
 }
