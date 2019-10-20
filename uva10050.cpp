@@ -4,42 +4,45 @@ using namespace std;
 #define maxN 60
 #define maxQ 10000
 #define DE cout << " ::"
+
 char map[maxN][maxN];
 int  G[maxN][maxN]; // -1 vis, 0 cango, 1 blocked
-int n, m, rtx, rty;
+int n, m, rtx, rty, cnt;
 
-int q[maxN][2];
-int front, rear;
-int F[4][2] = { {1,0}, {-1,0}, {0,1}, {0,-1}};
-inline void init()
+int F[4][2] = { {0,-1}, {1,0}, {0,1}, {-1,0}};
+inline void Gen()
 {
-    front=0, rear=0;
-    q[rear++][0]=rtx, q[rear][1]=rty;
-    map[rtx][rty]='0';
-    G[rtx][rty]=-1;
-}
-void BFS()
-{
-    init();
-    while (rear>front)
+    int ux=rtx, uy=rty;
+    cnt=0;
+    map[ux][uy]='0';
+    G[ux][uy]=-1;
+
+    bool flag=1;
+    while (flag)
     {
-        int ux=q[front++][0], uy=q[front][1];
+        flag=0;
+        int nx, ny;
         for( int i=0; i<4; i++)
         {
             int vx=ux+F[i][0], vy=uy+F[i][1];
-            if (G[vx][vy]>0)
+
+            if (G[vx][vy]==0)
+            {
+                map[vx][vy]='0';
+                if (!flag)
+                {
+                    G[vx][vy]=-1;
+                    nx=vx,ny=vy;
+                    flag=1;
+                    cnt++;
+                }
+            }
+            else if (G[vx][vy]>0)
             {
                 map[vx][vy]='X';
-                continue;
             }
-            if (G[vx][vy]<0)
-            {
-                continue;
-            }
-            G[vx][vy]=-1;
-            map[vx][vy]='0';
-            q[rear++][0]=vx, q[rear][1]=vy;
         }
+        ux=nx, uy=ny;
     }
 }
 
@@ -51,15 +54,16 @@ int main()
     while (cin >> n >> m)
     {
         if (n==0&&m==0) break;
+        cout << '\n';
         for( int x=0; x<maxN; x++)
         {
             for( int y=0; y<maxN; y++)
             {
-                G[x][y]=0;
+                G[x][y]=-1;
                 map[x][y]='?';
             }
         }
-        cin >> rtx >> rty;
+        cin >> rty >> rtx;
         for( int y=1; y<=n; y++)
         {
             for( int x=1; x<=m; x++)
@@ -69,17 +73,24 @@ int main()
                 G[x][y] = (c=='X');
             }
         }
-        BFS();
 
+        Gen();
+    
         for( int y=1; y<=n; y++)
         {
+            cout << '|';
+            for( int i=0; i<m; i++)
+                cout << "---|";
+            cout << "\n|";
+
             for( int x=1; x<=m; x++)
-            {
-                cout << map[x][y];
-            }
-            cout << '\n';
+                cout << ' ' << map[x][y] << " |";
+            cout << "\n";
         }
+        cout << "|";
+        for( int i=0; i<m; i++)
+            cout << "---|";
+        cout << "\n\n";
+        cout << "NUMBER OF MOVEMENTS: " << cnt << "\n";
     }
-
-
 }
