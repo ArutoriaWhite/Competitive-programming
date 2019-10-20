@@ -1,14 +1,12 @@
 #include<iostream>
 using namespace std;
 
-int F[4][2] = { {0,-1}, {1,0}, {0,1}, {-1,0}};
-
 int main()
 {
-    int a, b;
-    cin >> a >> b;
-    for( int i=0; i<4; i++)
+    int f, m;
+    while (cin>>m)
     {
-        cout << a+F[i][0] << ' ' << b+F[i][1] << '\n';
+        f = (m==1)? 5 : 6;
+        cout << f << '\n';        
     }
 }
