@@ -73,7 +73,7 @@ int main()
                 push_front(letter);
                 cout << letter;
             } 
-            else if(isNum(s[i]))
+            else if (isNum(s[i]))
             {
                 int num[10], j, r, sum=0;
                 for( j=i,r=0; isNum(s[j]); j++)
