@@ -1,8 +1,8 @@
 #include<iostream>
 #include<algorithm>
 using namespace std;
-
-
+#define maxN 
+int p[maxN];
 
 int main()
 {
