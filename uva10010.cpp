@@ -2,6 +2,8 @@
 #include<cstring>
 using namespace std;
 #define maxN 60
+#define isUpper(c) ('A'<=c&&c<='Z')
+#define toLower(c) (c+='a'-'A')
 #define DE cout << " ::"
 
 char arr[maxN][maxN];
@@ -11,10 +13,7 @@ inline bool check( int x, int y, int a, int b, string &s)
     int len=s.size();
     for( int i=0; i<len; i++,x+=a,y+=b)
     {
-        if (arr[x][y]!=s[i])
-        {
-            return 0;
-        }
+        if (arr[x][y]!=s[i]) return 0;
     }
     return 1;
 }
@@ -23,7 +22,6 @@ int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    freopen("in.txt","r",stdin);
 
     int T;
     cin >> T;
@@ -37,10 +35,8 @@ int main()
             for( int x=1; x<=n; x++)
             {
                 cin >> arr[x][y];
-                if ('A'<=arr[x][y]&&arr[x][y]<='Z')
-                {
-                    arr[x][y]+=('a'-'A');
-                }
+                if (isUpper(arr[x][y]))
+                    toLower(arr[x][y]);
             }
         }
 
@@ -50,6 +46,11 @@ int main()
         {
             string s;
             cin >> s;
+            for( int i=0; i<s.size(); i++)
+            {
+                if (isUpper(s[i]))
+                    toLower(s[i]);
+            }
             bool flag=1;
 
             for( int y=1; (y<=m)&&flag; y++)
@@ -60,12 +61,10 @@ int main()
                     {
                         for( int b=-1; (b<=1)&&flag; b++)
                         {
-                            DE << x << y << '\n';
                             if( a==b && b==0) continue;
                             if (check(x,y,a,b,s))
                             {
-                                DE << arr[x][y] << ' ' << s[0] << ' ';
-                                DE << y << ' ' << x << '\n';
+                                    cout << y << ' ' << x << '\n';
                                 flag=0;
                             }
                         }
@@ -73,5 +72,6 @@ int main()
                 }
             }
         }
+        if (T>0) cout << '\n';
     }
 }
