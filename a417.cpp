@@ -1,5 +1,4 @@
 #include<cstdio>
-#include<iostream>
 #include<string.h>
 using namespace std;
 #define maxN 110
@@ -23,11 +22,11 @@ int main()
         for( int x=0; x<=n+1; x++) arr[x][0] = arr[x][n+1] = -1;
         for( int y=0; y<=n+1; y++) arr[0][y] = arr[n+1][y] = -1;
 
-        int k=n*n, cnt=0, f, x, y;
-        if (m==1) x=0, y=1, f=E;
-        else x=1, y=0, f=S;
+        int k=n*n, cnt=0, f, x=1, y=1;
+        if (m==1) f=E;
+        else f=S;                     
 
-        while (cnt<k)
+        while (cnt<k-1)
         {
             if (f==E)
             {
@@ -49,20 +48,20 @@ int main()
             }
             else if (f==S)
             {
-                while (arr[x][y-1]==0)
-                    arr[x][y--] = ++cnt;
+                while (arr[x][y+1]==0)
+                    arr[x][y++] = ++cnt;
                 f = (m==1)? W : E;
             }
-            cout << cnt << '\n';
         }
+        arr[x][y] = ++cnt;
 
-        for( int y=0; y<=n+1; y++)
+        for( int y=1; y<=n; y++)
         {
-            for( int x=0; x<=n+1; x++)
+            for( int x=1; x<=n; x++)
             {
                 printf("%5d",arr[x][y]);
             }
-            cout << '\n';
+            printf("\n");
         }
     }
 }
