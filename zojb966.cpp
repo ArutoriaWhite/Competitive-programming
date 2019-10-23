@@ -2,72 +2,46 @@
 #include<algorithm>
 #include<string.h>
 using namespace std;
-#define maxN 100000
+#define maxN 10010
 
-int id[maxN];
-int arr[maxN][2];
+int id[maxN<<1];
+int pos[maxN<<1];
+int type[maxN<<1];
+int rear=0;
 
 inline bool cmp( int a, int b)
 {
-    return (arr[a][0]==arr[b][0])? arr[a][1]>arr[b][1] : arr[a][0]<arr[b][0];
+	return (pos[a]==pos[b])? type[a]>type[b] : pos[a]<pos[b];
 }
 
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    int n, rear=0;
-    cin >> n;
-
-    memset(id,-1,sizeof(id));
-
-    for( int i=0; i<n; i++)
-    {
-        int s, e;
-        cin >> s >> e;
-
-        arr[rear][0]=s;
-        arr[rear][1]=1;
-        id[rear]=rear++;
-
-        arr[rear][0]=e;
-        arr[rear][1]=-1;
-        id[rear]=rear++;
-    }
-
-    for( int i=0; i<rear; i++)
-    {
-        cout << id[i] << ' ';
-    }
-    cout << "\n\n";    
-    sort(id,id+rear,cmp);
-    for( int i=0; i<rear; i++)
-    {
-        cout << id[i] << ' ';
-    }
-    cout << '\n';
+int main() {
+	int n;
+	cin >> n;
+	for( int i=0; i<n; i++)
+	{
+		id[rear]=rear;
+		cin >> pos[rear];
+		type[rear]=1;
+		rear++;
+		id[rear]=rear;
+		cin >> pos[rear];
+		type[rear]=-1;
+		rear++;
+	}
+	sort( id, id+rear, cmp);
+	
+	int cnt=0, l=pos[id[0]], sum=0;
+	for( int i=0; i<rear; i++)
+	{
+		cnt+=type[id[i]];
+		if (cnt==0)
+		{
+			sum += pos[id[i]]-l;
+			l=pos[id[i+1]];
+		}
+	}
+	
+	cout << sum << '\n';
+	
+	return 0;
 }
-/*
-input:
-5
-160 180
-150 200
-280 300
-300 330
-190 210
-
-id[rear]=rear;
-rear++;
-out:
-0 1 2 3 4 5 6 7 8 9
-
-2 0 1 8 3 9 4 6 5 7
-
-///////////////
-id[rear]=rear++;
-out:
-0 0 1 2 3 4 5 6 7 8
-
-2 0 0 1 8 3 4 6 5 7
-*/
