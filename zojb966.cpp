@@ -1,5 +1,6 @@
 #include<iostream>
 #include<algorithm>
+#include<string.h>
 using namespace std;
 #define maxN 100000
 
@@ -18,6 +19,9 @@ int main()
 
     int n, rear=0;
     cin >> n;
+
+    memset(id,-1,sizeof(id));
+
     for( int i=0; i<n; i++)
     {
         int s, e;
