@@ -1,6 +1,5 @@
 #include<iostream>
 using namespace std;
-#define maxN 1000010
 
 int n, m, k;
 int f( int n, int k)
