@@ -1,18 +1,15 @@
 #include<iostream>
 using namespace std;
-#define K -7
-
-string s;
 
 int main()
 {
+    string s;
     while (getline(cin,s))
     {
-        int len = s.size();
-        for( int i=0; i<len; i++)
+        for( int len=s.size(),i=0; i<len; i++)
         {
-            cout << (char)(s[i]+K);
+            cout << (char)(s[i]-7);
         }
-        cout << '\n';        
-    }
+	cout << '\n';
+    }   
 }
