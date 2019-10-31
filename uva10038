@@ -1,0 +1,38 @@
+#include<iostream>
+#include<string.h>
+#include<math.h>
+using namespace std;
+#define maxN 3010
+
+bool s[maxN];
+int n;
+
+int main() {
+	while (cin>>n)
+	{
+		memset(s,0,sizeof(s));
+		
+		int a, b, cnt=n;
+		cin >> a;
+		for (int i=1; i<n; i++,a=b)
+		{
+			cin >> b;
+			if (1<=abs(a-b) && abs(a-b)<n && (!s[abs(a-b)]))
+			{
+				cnt--;
+				s[abs(a-b)] = 1;
+			}
+		}
+		
+		if (cnt==1)
+		{
+			cout << "Jolly\n";
+		}
+		else
+		{
+			cout << "Not jolly\n";
+		}
+		
+	}
+	return 0;
+}
