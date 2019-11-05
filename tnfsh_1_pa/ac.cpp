@@ -18,7 +18,6 @@ int main()
     }
 	
 	cout << fixed << setprecision(4) << mx << '\n';
-
 	if (mx>k)
 	{
 		cout << "I'm the bone of my sword\n";
