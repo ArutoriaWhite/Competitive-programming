@@ -8,10 +8,6 @@ using namespace std;
 int pre[maxN], to[maxN], n;
 char ans[30];
 
-inline void init_dfs()
-{
-	ans[0] = '\0';
-}
 void DFS( int used, int dep)
 {
 	if (dep==n)
@@ -72,7 +68,7 @@ int main()
 			pre[b] |= (1<<a);
 		}
 		
-		init_dfs();
+		ans[0] = '\0';
 		DFS(0,0);
 	}
 }
