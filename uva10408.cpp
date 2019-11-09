@@ -1,48 +1,59 @@
 #include<iostream>
+#include<algorithm>
 using namespace std;
 #define maxN 1000000
+#define DE cout << " ::"
 
-int p[maxN];
-int s[maxN], m[maxN], id[maxN], r=0;
+int s[maxN], m[maxN], nid[maxN], r=0, pos[maxN]; // son, mother
+int n[maxN], k[maxN], qid[maxN], anss[maxN], ansm[maxN], r2=0;
 
-int n[maxN], k[maxN], q[maxN], ans[maxN][2], qr=0;
-
-int gcd( int a, int b)
+inline bool cmp( int a, int b)
+{
+	return n[a]<n[b];
+}
+inline bool cmp2( int a, int b)
+{
+	return ((double)(s[a]))/(m[a]) < ((double)(s[b]))/(m[b]); 
+}
+inline int gcd( int a, int b)
 {
 	while (b!=0)
 	{
-		int tmp=b;
-		b=a%b,a=tmp;
+		int tmp=a;
+		a = b;
+		b = tmp%b;
 	}
 	return a;
 }
 
 int main()
 {
-	for (int i=0; i<=1000; i++)
+	for (int i=0; i<maxN; i++)
+		qid[i] = i, nid[i] = i;
+	while (cin >> n[r2] >> k[r2++]);
+	r2--;
+
+	sort(qid,qid+r2,cmp);
+	
+	for (int i=1; i<=1000; i++)
 	{
-		for (int j=1; j<=i; j++)
+		for(int j=1; j<=i; j++)
 		{
 			if (gcd(i,j)!=1) continue;
-			s[r]=j, m[r++]=j;
-			p[i]=r;
-		}
+			pos[i] = r;
+			s[r] = j;
+			m[r++] = i;
+		}	
 	}
 
-	while (cin >> n[qr] >> k[qr])
+	for (int i=0; i<r2; i++)
 	{
-		q[qr] = qr;
-		qr++;
+		sort(nid, nid+pos[n[qid[i]]]+1, cmp2);
+		anss[qid[i]] = s[nid[k[qid[i]]-1]];
+		ansm[qid[i]] = m[nid[k[qid[i]]-1]];
 	}
-	
-	int j=0;
-	for (int i=0; i<qr; i++)
+	for (int i=0; i<r2; i++)
 	{
-		if (n[i]!=j)
-		{
-			j=n[i];
-			sort(id,id+pos[j]);
-		}
-		ans[q[i]][0] = k[
+		cout << anss[i] << '/' << ansm[i] << '\n';
 	}
 }
