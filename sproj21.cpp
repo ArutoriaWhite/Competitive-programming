@@ -3,11 +3,14 @@ using namespace std;
 #define KILL 0
 #define RUSH 1
 #define DE cout << " ::"
-#define maxN (50000+10)
+#define maxN (500000+10)
 
 int to[maxN];
 
 int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	
 	int n, m;
 	cin >> n >> m;
 	for (int i=0; i<n; i++)
@@ -41,6 +44,11 @@ int main() {
 			}
 		}
 	}
-	for (int i=0,j=to[i]; j!=0; j++
+	for (int i=0,j=to[i]; j!=0; i=j,j=to[j])
+	{
+		cout << j;
+		if (to[j]==0) cout << '\n';
+		else cout << ' ';
+	}
 	return 0;
 }
