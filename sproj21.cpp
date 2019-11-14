@@ -1,54 +1,55 @@
 #include<iostream>
 using namespace std;
-#define KILL 0
-#define RUSH 1
-#define DE cout << " ::"
-#define maxN (500000+10)
+#define maxN (100000+10)
 
-int to[maxN];
+int to[maxN], from[maxN];
+inline void init( int n)
+{
+	for (int i=0; i<n; i++)
+		to[i] = i+1;
+	to[n] = 0;
+	
+	for (int i=1; i<=n; i++)
+		from[i] = i-1;
+	from[0] = -1;
+}
+inline void rm( int x)
+{
+	to[ from[x] ] = to[x];
+	from[to[x]] = from[x];
+}
+inline void swap( int x)
+{
+	int a = from[from[x]], b = from[x],
+		c = x, d = to[x];
+	to[a] = c;
+	to[b] = d, from[b] = c;
+	to[c] = b, from[c] = a;
+	from[d] = b;	
+}
 
-int main() {
+int main()
+{
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	
 	int n, m;
 	cin >> n >> m;
-	for (int i=0; i<n; i++)
-		to[i] = i+1;
+	init(n);
+	
 	for (int i=0; i<m; i++)
 	{
 		int opr, x;
 		cin >> opr >> x;
-		if (opr==KILL)
-		{
-			for (int j=0,k=to[j]; k!=0; j=k,k=to[k])
-			{
-				if (k==x)
-				{
-					to[j] = to[k];
-					break;
-				}
-			}
-		}
-		else
-		{
-			for (int j=0,k=to[j],f=to[k]; f!=0; j=k,k=f,f=to[f])
-			{
-				if (f==x)
-				{
-					to[j] = f;
-					to[k] = to[f];
-					to[f] = k;
-					break;
-				}
-			}
-		}
+		if (opr==0)
+			rm(x);
+		else if (opr==1 && to[0]!=x)
+			swap(x);
 	}
-	for (int i=0,j=to[i]; j!=0; i=j,j=to[j])
+	for (int i=to[0]; i!=0; i=to[i])
 	{
-		cout << j;
-		if (to[j]==0) cout << '\n';
+		cout << i;
+		if (to[i]==0) cout << '\n';
 		else cout << ' ';
 	}
-	return 0;
 }
