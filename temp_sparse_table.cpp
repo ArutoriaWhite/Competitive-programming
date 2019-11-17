@@ -9,7 +9,7 @@ inline void build( int n)
 	for (int i=0; i<n; i++)
 		cin >> st[0][i];
 	for (int j=1; (1<<j)<=n; j++)
-		for (int i=0; i+(1<<j)<n; i++)
+		for (int i=0; i+(1<<j)<=n; i++)
 			st[j][i] = min( st[j-1][i], st[j-1][i+(1<<(j-1))]);
 }
 inline int query( int l, int r)
@@ -31,6 +31,6 @@ int main()
 	{
 		int l, r;
 		cin >> l >> r;
-		cout << query(l-1,r-1) << '\n';
+		cout << query(l-1,r-1)+1 << '\n';
 	}
 }
