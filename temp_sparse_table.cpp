@@ -16,6 +16,7 @@ inline int query( int l, int r)
 {
 	int k;
 	for (k=0; (1<<k)<=(r-l+1); k++);
+        k--;
 	return min( st[k][l], st[k][r-(1<<k)+1]);
 }
 
