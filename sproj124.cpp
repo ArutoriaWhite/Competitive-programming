@@ -6,6 +6,7 @@
 #define B2 bx,by
 #define B3 mx,by
 #define B4 mx,my
+
 void msol (int n, int bx, int by, int fx, int fy)
 {
 	if (n==1) return;
