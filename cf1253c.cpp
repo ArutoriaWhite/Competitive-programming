@@ -2,9 +2,9 @@
 #include<algorithm>
 using namespace std;
 #define maxN (200000+10)
-#define int long long
 
-int arr[maxN], sum[maxN], ans[maxN], n, m;
+int arr[maxN], n, m;
+long long sum[maxN], ans[maxN];
 
 inline void build()
 {
@@ -24,13 +24,15 @@ signed main() {
 
 	for (int i=1; i<=m; i++)
 	{
-		int d=0, s=0;
-		for (int k=0,j=i; j<=n; k=j,j+=m)
+		int d=0;
+		long long s=0;
+		for (int j=i; j<=n; j+=m)
 		{
 			s += sum[j];
 			ans[j]=s;
 		}
 	}
+	
 	for (int i=1; i<=n; i++)
 		cout << ans[i] << ' ';
 	cout << '\n';
