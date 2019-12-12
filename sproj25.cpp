@@ -5,6 +5,7 @@ int const maxN=1e2+10, maxI=1e6+10;
 
 int n, m;
 int f[maxN], r[maxN], to[maxI];
+// i.empty():= (f[i]==0)
 
 inline void push (int i, int x)
 {
@@ -31,7 +32,7 @@ inline void move (int i, int j)
 		f[j]=f[i];
 		r[j]=r[i];
 	}
-	else
+	else if (f[i]!=0)
 	{
 		to[r[j]] = f[i];
 		r[j] = r[i];
