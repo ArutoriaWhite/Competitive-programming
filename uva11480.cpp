@@ -3,13 +3,14 @@ using namespace std;
 
 int main()
 {
-	int n, a;
+	freopen("out.txt","w",stdout);
+	int n, t=0;
 	while (cin >> n)
 	{
 		if (n==0) return 0;
-		if (n&1) a=n>>1;
-		else a=n>>1-1;
-		cout << ((((1+n-2)*(n-2))>>1) - a)/6 << '\n';
+		int sum=0;
+		for (int a=1; a<(n/3); a++)
+			sum += (n-a+1)/2-a-1;
+		cout << "Case " << ++t << ": " << sum << "\n";
 	}
-
 }
