@@ -10,7 +10,7 @@ int qx[M], qy[M], qp[M], f, r;
 
 inline bool out (int x, int y)
 {
-	return x<=0	|| y<=0 || x>n || y>m;
+	return x<=0 || y<=0 || x>n || y>m;
 }
 
 inline void bfs()
