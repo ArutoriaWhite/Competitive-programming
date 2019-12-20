@@ -3,7 +3,7 @@
 using namespace std;
 const int N=110;
 
-inline init ( int *n, string &s)
+inline void init ( int *n, string s)
 {
 	for (int i=0; i<N; i++)
 		n[i] = 0;
@@ -26,14 +26,15 @@ inline void minu (int *a, int *b, int *res)
 
 inline void muti (int *a, int *b, int *res)
 {
-	int car=0;
+	for (int i=0; i<N; i++)
+		for (int j=0; j<N; j++)
+			res[i+j] += a[j]*b[i];
+	int car = 0;
 	for (int i=0; i<N; i++)
 	{
-		res[i] = a[i]*b[i]+car;
-		if (res[i]>=10)
-			car=res[i]/10, res[i]%=10;
-		else
-			car=0;
+		res[i]+=car;
+		car = res[i]/10;
+		res[i]%=10;
 	}
 }
 
@@ -47,15 +48,32 @@ inline void print (int *n)
 	cout << '\n';
 }
 
+int excalibur[N], calibur[N], fuck[N];
+
 int main()
 {
-	int a[N], b[N], c[N];
-	string x, y;
-	while (cin >> x >> y)
-	{
-		init(a,x);
-		init(b,y);
-		muti(a,b,c);
-		print(c);
-	}
+	int *a, *b, *res;
+	a = excalibur;
+	b = calibur;
+	res = fuck;
+	
+	string n, m;
+	cin >> n >> m;
+	
+	init(a,m);
+	init(b,"1");
+	init(res,"0");
+	minu(a,b,res);
+	swap(res,a);
+	
+	init(b,m);
+	init(res,"0");
+	muti(a,b,res);
+	swap(res,a);
+	
+	init(b,"2");
+	init(res,"0");
+	muti(a,b,res);
+	
+	print(res);
 }
