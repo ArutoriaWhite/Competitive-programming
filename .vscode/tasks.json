@@ -1,31 +1,33 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "type": "shell",
-            "command": "g++",
-            "args": [
-                "-std=c++14"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+"version": "2.0.0",
+
+"tasks": [
+
+    {
+        "label": "build & run",     //It's name of the task , you can have several tasks 
+        "type": "shell",    //type can be either 'shell' or 'process' , more details will be given below
+        "command": "g++",   
+        "args": [
+            "${file}",  //${file} gives full path of the file
+            "-o",   
+            "${workspaceFolder}\\build\\a.out",    //output file name
+            "&&",   //to join building and running of the file
+            "${workspaceFolder}\\build\\a.out"
+        ],
+        "group": {
+            "kind": "build",    //defines to which group the task belongs
+            "isDefault": true
         },
-        {
-            "type": "shell",
-            "label": "g++ build active file",
-            "command": "/usr/bin/g++",
-            "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
-            ],
-            "options": {
-                "cwd": "/usr/bin"
-            }
-        }
-    ]
+        "presentation": {   //Explained in detail below
+            "echo": false,
+            "reveal": "always",
+            "focus": true,
+            "panel": "shared",
+            "clear": false,
+            "showReuseMessage": false
+        },
+        "problemMatcher": "$lessCompile",
+    },
+
+]
 }

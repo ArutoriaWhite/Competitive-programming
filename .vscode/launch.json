@@ -1,17 +1,11 @@
 {
-    "version": "2.0.0",
-    "tasks": [
+    "configurations": [
         {
-            "label": "build",
-            "type": "shell",
-            "command": "g++",
-            "args": [
-                "-std=c++11"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "name": "Launch cpp by ria",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "build & run", // The name of the task defined above
+            "console": "externalTerminal"
         }
-    ]
+    ]   
 }
