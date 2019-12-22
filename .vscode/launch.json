@@ -1,11 +1,10 @@
 {
     "configurations": [
         {
-            "name": "Launch cpp by ria",
+            "name": "riaconf",
             "type": "node",
             "request": "launch",
             "preLaunchTask": "build & run", // The name of the task defined above
-            "console": "externalTerminal"
         }
     ]   
 }
