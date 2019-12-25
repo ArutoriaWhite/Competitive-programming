@@ -8,18 +8,20 @@
             "label": "g++ build active file",
             "command": "/usr/bin/g++",
             "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${file}",  //${file} gives full path of the file
+                "-std=c++14",
+                "-o",   
+                "${workspaceFolder}\\build\\a.out",    //output file name
+                "&&",   //to join building and running of the file
+                "${workspaceFolder}\\build\\a.out"
             ],
             "options": {
                 "cwd": "/usr/bin"
             },
             "problemMatcher": [
-                "$gcc"
+                "$lessCompile"
             ],
-            "group": "build"
+            "group": {"kind":"build","isDefault":true}
         }
     ]
 }
