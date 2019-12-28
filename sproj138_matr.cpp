@@ -1,10 +1,11 @@
+#
 #include<iostream>
 #include<memory.h>
 using namespace std;
+#define int long long
 typedef int (*natori)[8];
 typedef int akagi[8][8];
 const int N = 8, M = 1000007;
-#define int long long
 
 akagi init = 
 {
