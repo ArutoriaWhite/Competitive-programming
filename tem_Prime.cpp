@@ -3,11 +3,11 @@
 #include <random>
 using namespace std;
 
-long long power(long long a, long long n,long long m)//  power(a, n) 表示詢問 a^n
+long long power(long long a, long long n,long long m)
 {
 	long long tmp = a,ans = 1;
 	while (n) {
-		if (n&1) { //第time個數為1(÷2^time次後為奇數)
+		if (n&1) {
 			ans = tmp*ans%m;
 		}
 		n /= 2;
