@@ -1,22 +1,23 @@
 #include<iostream>
 using namespace std;
+const int N=1e8;
 
 int main()
 {
-	int a, b;
+	int a, b, t;
 	while (cin >> a >> b)
 	{
-		int cnt=0;
+		t=0;
 		while (b!=0)
 		{
-			if (cnt == 0) cout << '[';
-			else if (cnt==1) cout << ';';
-			else cout << ',';
-			cout << (a/b);
-			int tmp = a;
-			a = b;
-			b = tmp%b;
-			cnt++;
+			if (t==0) cout << "[";
+			else if (t==1) cout << ";";
+			else cout << ",";			
+			cout << a/b;
+			int tmp=a;
+			a=b;
+			b=tmp%b;
+			t++;			
 		}
 		cout << "]\n";
 	}

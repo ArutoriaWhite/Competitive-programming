@@ -1,42 +1,30 @@
 #include<iostream>
 using namespace std;
 
-string s;
-int len, sum, cnt;
-int table[100];
+int mp[300];
 
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    table['W'] = 64;
-    table['H'] = 32;
-    table['Q'] = 16;
-    table['E'] = 8;
-    table['S'] = 4;
-    table['T'] = 2;
-    table['X'] = 1;
-
-    while (getline(cin,s))
-    {
-        if (s=="*") break;
-
-        len=s.size();
-        sum=0, cnt=0;
-
-        for( int i=1; i<len; i++)
-        {
-            if (s[i]=='/')
-            {
-                if (sum==64)
-                {
-                    cnt++;
-                }
-                sum=0;
-                continue;
-            }
-            sum += table[s[i]];
-        }
-        cout << cnt << '\n';        
-    }
+	mp['W']=64, mp['H']=32, mp['Q']=16;
+	mp['E']=8, mp['S']=4, mp['T']=2, mp['X']=1;
+	
+	string s;
+	while (cin >> s)
+	{
+		if (s=="*") break;
+		
+		int res=0, sum=0;
+		for (int i=1; i<s.size(); i++)
+		{
+			if (s[i]=='/')
+			{
+				if (sum==64)
+					res++;
+				sum=0;
+			}
+			else
+				sum += mp[s[i]];
+		}
+		cout << res << '\n';
+	}
 }
