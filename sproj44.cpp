@@ -1,7 +1,6 @@
 #include<iostream>
 using namespace std;
 const int N=110, M=1e6;
-#define DE cout << " ::"
 
 string G[N];
 int qx[M], qy[M], qd[M], f, r, vis[N][N], t=0;
@@ -18,7 +17,7 @@ inline int bfs (int rtx, int rty)
     {
         int ux=qx[f], uy=qy[f], d=qd[f]; f++;
         if (G[uy][ux] == '@')
-            return d;
+            return d;2
         for (int i=0; i<4; i++)
         {
             int vx=ux+walk[i][0], vy=uy+walk[i][1];

@@ -31,6 +31,7 @@ int main()
     string tmp;
     while (cin >> n >> m)
     {
+        m = min(n,m);
         for (int i=0; i<n; i++)
         {
             id[i]=i;
