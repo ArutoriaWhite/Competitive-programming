@@ -5,6 +5,9 @@ int arr[1000000], q[1000000], r=0;
 
 int main()
 {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
     int n;
     while (cin >> n)
     {

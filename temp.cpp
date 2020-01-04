@@ -18,10 +18,3 @@ int main()
         cout << v[i] << ' ';
     cout << '\n';
 }
-
-// vector
-// x<s[0], lwb(x) = s.begin();
-// s.back()<x, lwb(x) = s.end();
-
-// array
-// x<s[0], 
