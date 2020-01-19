@@ -1,73 +1,49 @@
-#include<iostream>
-#include<algorithm>
+#include <iostream>
+#include <algorithm>
 #include<memory.h>
-#define lowbit(x) (x&-x)
+#define int long long
 using namespace std;
+#define lowbit(x) (x&-x)
 const int N = 1e5+10;
 
-int n, arr[N], ord[N];
-int BIT[N<<1];
-
-inline void init()
-{
-    memset(BIT,0,sizeof(BIT));
-    for (int i=0; i<n; i++)
-        ord[i] = i;
-}
-inline bool cmp (int i, int j)
-{
-    return arr[i]>arr[j];
-}
-
-
-inline int sum (int q)
+int BIT[N], n;
+inline int sum (int p)
 {
     int res = 0;
-    for ( ; q>0; q-=lowbit(q)) res += BIT[q];
+    for ( ; p>0; p-=lowbit(p)) res += BIT[p];
     return res;
-}
-inline int query (int l, int r)
-{
-    return sum(r)-sum(l);
 }
 inline void modify (int p, int x)
 {
     for (p++; p<=n; p+=lowbit(p)) BIT[p]+=x;
 }
 
-int main()
+int arr[N], id[N], t=0;
+inline bool cmp (int i, int j)
 {
+    return (arr[i]==arr[j])? (i>j) : (arr[i]>arr[j]);
+}
 
-    char opr;
-    int l, r;
-    while (cin >> opr)
-    {
-        if (opr == 'm')
-        {
-            cin >> l;
-            modify(l);
-        }
-        else
-        {
-            cin >> l >> r;
-            cout << query(l,r) << '\n';
-        }
-    }
+signed main()
+{
+    ios::sync_with_stdio(0);
+    //cin.tie(0);
 
     while (cin >> n)
     {
-        init();
+        if (n==0) break;
+        memset(BIT,0,sizeof(BIT));
+
         for (int i=0; i<n; i++)
-            cin >> arr[i];
-        sort(ord,ord+n);
+            cin >> arr[i], id[i] = i;
+        sort(id,id+n,cmp);
 
         int res=0;
-        for (int i=0,j; i<n; i++)
+        for (int i=0; i<n; i++)
         {
-            for (j=i; arr[ord[j]]==arr[ord[i]]; j++);
-            res += (j-i)*(query(ord[i]));
-            modify(ord[i],(j-i));
+            res += sum(id[i]);
+            modify(id[i],1);
         }
-        cout << res << '\n';       
+        cout << "Case #" << ++t << ": " << res << "\n";
     }
 }

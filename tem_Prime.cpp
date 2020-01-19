@@ -11,6 +11,7 @@ long long power(long long a, long long n,long long m)
 			ans = tmp*ans%m;
 		}
 		n /= 2;
+		
 		tmp = tmp*tmp%m;
 	}
 	return ans;

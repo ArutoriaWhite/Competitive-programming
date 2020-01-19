@@ -9,7 +9,7 @@ void dfs ( int x, int y, int s, int qx, int qy)
 	int u=y-s, d=y+s, l=x-s, r=x+s;
 	if ((u<=qy&&qy<=d) && (l<=qx&&qx<=r))
 		ans++;
-	dfs(x+s,y+s,s>1,qx,qy);
+	dfs(x+s,y+s,s>>1,qx,qy);
 	dfs(x+s,y-s,s>>1,qx,qy);
 	dfs(x-s,y-s,s>>1,qx,qy);
 	dfs(x-s,y+s,s>>1,qx,qy);
