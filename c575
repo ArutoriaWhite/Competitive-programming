@@ -1,0 +1,32 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+const int N = 5e4+10, R = 1e9;
+
+int pos[N], n, k;
+
+inline bool suc (int r)
+{
+	int i,t;
+	for (i=0,t=k; i<n&&t>0; t--)
+		for (int l = pos[i]+r; i<n&&pos[i]<=l; i++);
+	return (i>=n);
+}
+
+inline int bs ()
+{
+	int s = R, i=0;
+	while (s>0)
+		if (suc(i+s)) s>>=1;
+		else i += s;
+	return i+1;
+}
+
+int main()
+{
+	ios::sync_with_stdio(0); cin.tie(0);
+	cin >> n >> k;
+	for (int i=0; i<n; i++) cin >> pos[i];
+	sort(pos,pos+n);
+	cout << bs() << '\n';	
+}
