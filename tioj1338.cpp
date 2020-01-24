@@ -1,7 +1,7 @@
 #include "lib1338.h"
 #include <algorithm>
 using namespace std;
-const int maxN = 1e6, K = 30;
+const int maxN = 1e6, K = 20;
 typedef long long LL;
 
 LL min_st[K][maxN], gcd_st[K][maxN];
