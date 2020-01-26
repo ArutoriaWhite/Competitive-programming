@@ -3,14 +3,13 @@ using namespace std;
 const int N = 9;
 
 int hor[N], ver[N], blo[3][3], sol[N*N];
-string mp;
+int mp[N*N];
 
 inline void init()
 {
     memset(hor,0,sizeof(hor));
     memset(ver,0,sizeof(ver));
     memset(blo,0,sizeof(blo));
-    memset(sol,0,sizeof(sol));
 }
 inline void add (int x, int y, int k)
 {
@@ -23,12 +22,12 @@ inline void del (int x, int y, int k)
 inline void build ()
 {
     for (int i=0,len=mp.size(); i<len; i++)
-        if (mp[i]!='.')
-            add(i%N,i/N,mp[i]-'0');
+        if (mp[i]!=0)
+            add(i%N,i/N,mp[i]);
 }
 inline bool can (int x, int y, int k)
 {
-    return !( (hor[y]&(1<<k)) || (ver[x]&(1<<k)) || (blo[x/3][y/3]&(1<<k)) );
+    return !((hor[y]&(1<<k)) || (ver[x]&(1<<k)) || (blo[x/3][y/3]&(1<<k)));
 }
 bool dfs (int d)
 {
@@ -41,7 +40,7 @@ bool dfs (int d)
     }
     if (mp[d]!='.')
     {
-        sol[d] = mp[d]-'0';
+        sol[d] = mp[d];
         return dfs(d+1);
     }
     for (int i=1; i<=9; i++)
@@ -58,6 +57,6 @@ int main()
     while (cin >> mp && mp!="end")
     {
         init(), build();
-        if (!dfs(0)) cout << "No solution.\n";
+        if (!dfs(0)) cout << "NO SOLUTION\n";
     }
 }
