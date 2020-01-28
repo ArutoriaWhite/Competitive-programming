@@ -5,7 +5,7 @@ using namespace std;
 const int N = 1e4+10;
 
 bitset<N> adj[N], colo, vis;
-int n, m;
+long long n, m;
 
 bool dfs (int u, int p)
 {
@@ -27,6 +27,13 @@ int main()
 {
     ios::sync_with_stdio(0), cin.tie(0);
     cin >> n >> m;
+
+    if (((n*n-n)/2)-m > (n*n)/4)
+    {
+        cout << "No\n";
+        return 0;
+    }
+
     for (int i=1; i<=n; i++)
         for (int j=1; j<=n; j++)
             adj[i].set();
