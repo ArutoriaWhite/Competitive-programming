@@ -3,9 +3,8 @@ using namespace std;
 
 int main()
 {
-	int n;
-	while (cin >> n)
-n';
-	}
+	int b = 0, b2=0;
+	cout << (!b) << '\n';
+}
 
 
