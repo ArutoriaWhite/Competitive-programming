@@ -9,7 +9,7 @@ vector<edge> adj[N];
 
 void dfs (int u, int p)
 {
-	for (auto v: adj[u])
+	for (const auto &v: adj[u])
 	{
 		if (v.to==p) continue;
 		edg[v.i] = v.to;
@@ -18,6 +18,7 @@ void dfs (int u, int p)
 		dep[v.to] = dep[p]+1;
 		dfs(v.to,u);
 	}
+	return;
 }
 inline int query (int x, int y)
 {
@@ -38,9 +39,10 @@ inline void modify (int p, int x)
 inline void init()
 {
 	for (auto v: adj) v.clear();
-	for (auto v: adj) v.resize(n+10);
+	for (auto v: adj) v.reserve(n+10);
 	dep[1]=0;
 }
+
 
 int main()
 {
