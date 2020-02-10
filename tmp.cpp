@@ -1,10 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+inline foo()
+{
+	int a=1;
+	return a;
+}
+
 int main()
 {
-	int b = 0, b2=0;
-	cout << (!b) << '\n';
+	cout << foo();
 }
 
 
