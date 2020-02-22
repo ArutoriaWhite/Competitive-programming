@@ -1,36 +1,56 @@
-#include<iostream>
+#include <iostream>
+#include <cstring>
 using namespace std;
-#define DE cout << " ::"
-int const maxM = 12, maxN = 110;
+const int N = 110, M = 20;
 
-int n, m, t, used[maxM][maxN], w[maxM][maxN], dp[maxM][maxN];
+int dp[N][M], w[N][M], from[N][M], mx, my;
+int minv, minw, miny;
 
-int f (int x, int y)
+inline void solv()
 {
-	if (x==m)
-		return 0;
-	if (used[x][y]<t)
-	{
-		used[x][y] = t;
-		int u = f(x+1,(y-1+n)%n), mid = f(x+1,y), d = f(x+1,(y+1)%n);
-		dp[x][y] = min(min(u,d),mid) + w[x][y];
-	}
-	return dp[x][y];
+	memset(dp,0,sizeof(dp));
+	for (int y=0; y<my; y++)
+		dp[mx-1][y] = w[mx-1][y];
+	for (int x=mx-1; x>=0; x--)
+		for (int y=0; y<my; y++)
+		{
+			dp[x][y] = 1e9;
+			for (int k=-1; k<=1; k++)
+			{
+				int vy = (y+k+my)%my;
+				if (dp[x+1][vy]<dp[x][y])
+				{
+					from[x][y] = vy;
+					dp[x][y] = dp[x+1][vy];
+				}
+				else if (dp[x+1][vy] == dp[x][y])
+					if (from[x][y] > vy) from[x][y] = vy;
+			}
+			dp[x][y] += w[x][y];
+		}
+}
+
+inline void print_dp()
+{
+	for (int y=0; y<my; y++)
+		for (int x=0; x<mx; x++)
+			cout << "::" << dp[x][y] << "\n "[x+1<mx];
 }
 
 int main()
 {
-	while (cin >> n >> m)
+	while (cin >> my >> mx)
 	{
-		t++;
-		for (int y=0; y<n; y++)
-			for (int x=0; x<m; x++)
+		for (int y=0; y<my; y++)
+			for (int x=0; x<mx; x++)
 				cin >> w[x][y];
-		
-		int res = 1e9;
-		for (int y=0; y<n; y++)
-			res = min(res,f(0,y));
-		DE << res << '\n';
-			
+		solv();
+		minv = 1e9, miny=1e9;
+		for (int y=0; y<my; y++)
+			if (dp[0][y] < minv)
+				minv = dp[0][y], miny=y;
+		for (int x=0; x<mx; miny = from[x][miny], x++)
+			cout << miny+1 << "\n "[x+1<mx];
+		cout << minv << '\n';
 	}
 }

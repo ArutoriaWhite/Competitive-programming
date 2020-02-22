@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int n;
+
 int main()
 {
-	for (unsigned long long i=30; i>=0; i--)
-		cout << :
+	cin >> n;
+	cout << 1+((1+n)*n)/2 << '\n';
 }
