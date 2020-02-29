@@ -35,7 +35,7 @@ signed main()
 	for (int i=0,x,y; i<m; i++)
 	{
 		cin >> x >> y;
-		x--, y--;
+		swap(x,y), x--, y--;
 		if (colo[x][y] == -1) dfs(x,y,i,G[x][y]);
 		else ans[i] = ans[colo[x][y]];
 	}
