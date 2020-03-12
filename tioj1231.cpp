@@ -25,9 +25,11 @@ int main()
 		cin >> c >> x, foods.pb( {x,c} );
 	cin >> t;
 	foods.pb( {0,0} );
+
 	sort(foods.begin(), foods.end(), [](pii a, pii b)->bool{return a.first > b.first;} );
 	for (auto x: foods)
 	{
+		x.first = min(x.first, t);
 		if (x.first != t)
 		{
 			pre = t, t = x.first;
