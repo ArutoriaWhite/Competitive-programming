@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 #define akiyama ios::sync_with_stdio(0), cin.tie(0);
-#define int long long
 #define exi(x,s) (s.find(x) != s.end())
 #define mem(a,x) memset(a,x,sizeof(a))
 #define pb push_back
@@ -12,23 +11,23 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int,int> Pii;
-const int INF=0x7f7f7f7f, MIN = 0xc0c0c0c0, N = 1e6+10;
+const int INF=0x7f7f7f7f, MIN = 0xc0c0c0c0, N = 1e6;
 
-int sta[N], r, n, res;
+int arr[N], mx, mn, n, u;
+double res;
 
-signed main()
+int main()
 {
-	akiyama;
-	cin >> n;
-	for (int i=0,x; i<n; i++)
+	while (cin >>  n && n)
 	{
-		cin >> x;
-		while (r>0 && sta[r-1]<x)
-			res += (r>1? min(x,sta[r-2]) : x), r--;
-		sta[r++] = x;
+		res = 0;
+		for (int i=0; i<n; i++)
+			cin >> arr[i];
+		sort(arr,arr+n);
+		for (int i=1; i<n-1; i++)
+			res += arr[i];
+		cout << fixed << setprecision(2) << (double)res/(n-2) << '\n';
 	}
-	for (int i=r-2; i>=0; i--)
-		if (i>=0)
-			res += sta[i];
-	cout << res << '\n';
 }
+
+

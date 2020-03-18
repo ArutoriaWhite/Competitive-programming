@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 #define akiyama ios::sync_with_stdio(0), cin.tie(0);
-#define int long long
 #define exi(x,s) (s.find(x) != s.end())
 #define mem(a,x) memset(a,x,sizeof(a))
 #define pb push_back
@@ -12,23 +11,22 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int,int> Pii;
-const int INF=0x7f7f7f7f, MIN = 0xc0c0c0c0, N = 1e6+10;
+const int INF = 0x3f3f3f3f, MIN = 0xc0c0c0c0, N = 210;
 
-int sta[N], r, n, res;
+int dis[N][N], n;
 
-signed main()
+int main()
 {
-	akiyama;
 	cin >> n;
-	for (int i=0,x; i<n; i++)
-	{
-		cin >> x;
-		while (r>0 && sta[r-1]<x)
-			res += (r>1? min(x,sta[r-2]) : x), r--;
-		sta[r++] = x;
-	}
-	for (int i=r-2; i>=0; i--)
-		if (i>=0)
-			res += sta[i];
-	cout << res << '\n';
+	mem(dis,INF);
+	for (int i=1; i<=n-1; i++)
+		for (int j=i+1; j<=n; j++)
+			cin >> dis[i][j];
+	for (int i=1; i<=n; i++)
+		dis[i][i] = 0;
+	for (int k=1; k<=n; k++)
+		for (int i=1; i<=n; i++)
+			for (int j=1; j<=n; j++)
+				dis[i][j] = min( dis[i][j], dis[i][k]+dis[k][j]);
+	cout << dis[1][n] << '\n';
 }
