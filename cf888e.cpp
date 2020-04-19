@@ -28,4 +28,5 @@ int main()
 		cin >> w[i], w[i]%=m;
 	sol();
 	cout << *max_element(dp[0].begin(),dp[0].end()) << '\n';
+	
 }

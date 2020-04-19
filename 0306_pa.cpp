@@ -1,16 +1,19 @@
 #include <bits/stdc++.h>
-#define akiyama ios::sync_with_stdio(0), cin.tie(0);
-#define exi(x,s) (s.find(x) != s.end())
+#define yukari ios::sync_with_stdio(0), cin.tie(0)
+#define de(x) cout << #x << "=" << x << ", "
+#define dend cout << '\n'
 #define mem(a,x) memset(a,x,sizeof(a))
-#define pb emplace_back
-#define uset unordered_set
-#define umap unordered_map
-#define de(x) cout << #x << '=' << x << ", "
-#define dend cout << "\n"
-typedef long long ll;
+#define exi(x,s) (s.find(x)!=s.end())
+#define Uset unordered_set
+#define Umap unordered_map
+#define Pq priority_queue
+#define pb push_back
+#define fi first
+#define se second
 using namespace std;
-const int INF=0x7f7f7f7f, N = 2e6+10;
+typedef pair<int,int> Pii;
+typedef long long ll;
+const int INF=0x3f3f3f3f, MIN=0xc0c0c0c0;
 
-int p[N];
-vector<int> adj[N];
+using namespace std;
 

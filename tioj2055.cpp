@@ -19,7 +19,7 @@ void pull(int x)
 void build(int x,int l,int r)
 {
     st[x].l=l,st[x].r=r,st[x].m=1e9;
-    if(l==r) cin>>st[x].m;
+    if (l==r) cin>>st[x].m;
     else
     {
         int mid=(l+r)>>1;

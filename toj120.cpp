@@ -10,7 +10,7 @@ int main() {
     cin>>arr[i];
     s[i]=s[i-1]+arr[i];
   }
-
+	
   int T;cin>>T;
   while(T--){
     int i1,i2;cin>>i1>>i2;
@@ -21,9 +21,5 @@ int main() {
     }
     i1--;
     cout<<s[i2]-s[i1]<<endl;
-
   }
-
-
-  
 }
