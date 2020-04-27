@@ -4,6 +4,7 @@
 #define Eriri ios::sync_with_stdio(0), cin.tie(0);
 #define F first
 #define S second
+#define int long long
 using namespace std;
 typedef pair<int,int> Pii;
 const int N = 5e4+10;
@@ -33,7 +34,7 @@ inline void f (int l, int r)
             res = min( res, dis(pos[i],pos[j]));
 }
 
-int main()
+signed main()
 {
     Eriri
     while (cin >> n)
