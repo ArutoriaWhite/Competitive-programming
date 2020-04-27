@@ -1,63 +1,46 @@
 #include <bits/stdc++.h>
+#define de(x) cout << #x << "=" << x << ", "
+#define dend cout << '\n'
+#define Eriri ios::sync_with_stdio(0), cin.tie(0);
+#define F first
+#define S second
 using namespace std;
-const int N = 9;
+typedef pair<int,int> Pii;
+const int N = 1e5;
+int to[N], from[N], val[N], r, cnt;
 
-int hor[N], ver[N], blo[3][3], sol[N*N];
-string mp;
-
-inline void init()
+void push_back (int x)
 {
-    memset(hor,0,sizeof(hor));
-    memset(ver,0,sizeof(ver));
-    memset(blo,0,sizeof(blo));
-    memset(sol,0,sizeof(sol));
+    ++cnt;
+    val[cnt] = x;
+    to[r] = cnt;
+    from[cnt] = r;
+    r = cnt;
 }
-inline void add (int x, int y, int k)
+void push_front (int x)
 {
-    hor[y] |= (1<<k), ver[x] |= (1<<k), blo[x/3][y/3] |= (1<<k);
-}
-inline void del (int x, int y, int k)
-{
-    hor[y] &= ~(1<<k), ver[x] &= ~(1<<k), blo[x/3][y/3] &= ~(1<<k);
-}
-inline void build ()
-{
-    for (int i=0,len=mp.size(); i<len; i++)
-        if (mp[i]!='.')
-            add(i%N,i/N,mp[i]-'0');
-}
-inline bool can (int x, int y, int k)
-{
-    return !( (hor[y]&(1<<k)) || (ver[x]&(1<<k)) || (blo[x/3][y/3]&(1<<k)) );
-}
-bool dfs (int d)
-{
-    int y=d/N, x=d%N;
-    if (d>=N*N)
+    if (r==0) push_back(x);
+    else
     {
-        for (int i=0; i<N*N; i++) cout << sol[i];
-        cout << '\n';
-        return 1;
+        ++cnt;
+        val[cnt] = x;
+        to[cnt] = to[0];
+        from[to[0]] = cnt;
+        to[0] = cnt;
     }
-    if (mp[d]!='.')
-    {
-        sol[d] = mp[d]-'0';
-        return dfs(d+1);
-    }
-    for (int i=1; i<=9; i++)
-    {
-        if (!can(x,y,i)) continue;
-        add(x,y,i), sol[d] = i;
-        if (dfs(d+1)) return 1;
-        del(x,y,i);
-    }
-    return 0;
 }
-int main()
+void print()
 {
-    while (cin >> mp && mp!="end")
-    {
-        init(), build();
-        if (!dfs(0)) cout << "No solution.\n";
-    }
+    for (int i=0,j=to[0]; j!=0; i=j,j=to[j])
+        cout << val[j] << '\n';
+}
+void pop_back()
+{
+    to[ from[r] ] = 0;
+    r = from[r];
+}
+void pop_front()
+{
+    to[0] = to[to[0]];
+    from[to[0]] = 0;
 }

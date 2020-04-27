@@ -4,6 +4,7 @@
 #define Eriri ios::sync_with_stdio(0), cin.tie(0);
 #define F first
 #define S second
+#define int long long
 using namespace std;
 typedef pair<int,int> Pii;
 const int N = 2e5+10;
@@ -13,16 +14,15 @@ int n, k, sz[N], dep[N], w[N], r, res;
 
 void dfs (int u, int p)
 {
-    sz[u] = 1;
+    sz[u] = 1, dep[u] = dep[p]+1;
     for (auto v: adj[u])
         if (v!=p)
-            dep[v] = dep[u]+1, dfs(v,u), sz[u] += sz[v];
-    if (u==1) w[r++] = 1;
-    else w[r++] = dep[u]-sz[u]+1;
+            dfs(v,u), sz[u] += sz[v];
+    w[r++] = dep[u]-sz[u];
 }
 
 
-int main()
+signed main()
 {
     Eriri
     cin >> n >> k;
