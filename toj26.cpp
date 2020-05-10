@@ -1,58 +1,28 @@
-#define _for(i,a,b) for(int i=(a);i<(b);i++)
-#include <iostream>
-#include <stdio.h>
-#include <algorithm>
-#include <map>
-#include <string.h>
-#include <vector>
-
+#include <bits/stdc++.h>
+#define de(x) cout << #x << "=" << x << ", "
+#define dend cout << '\n'
+#define Eriri ios::sync_with_stdio(0), cin.tie(0);
+#define F first
+#define S second
+#define md(x) (x+3)%3
 using namespace std;
+typedef pair<int,int> Pii;
+const int N = 3010;
 
-string s="";
+int dp[3][N], n, t, u, used[N][N];
+string s;
 
-int dpArr[3000][3000] = { 0 };
-
-int dp(int i,int edge) {
-	if (dpArr[i][edge] == 0) {
-
-		//end
-		if (i == edge) dpArr[i][edge] = 1;
-		else if (i + 1 == edge) dpArr[i][edge] = (s[i] == s[edge]) ? 2 : 1;
-
-		else {
-			bool isPaired = false;
-			int stepCntr = 0;
-			//find pair with i
-			for (int j = edge; j > i; j--) {
-				if (s[j] == s[i]) {
-					if (i + 1 == j) {
-						dpArr[i][edge] = max(dp(i + 1, edge), 2); // ....cc... 如果遞迴到下一次算會多算1
-						return dpArr[i][edge];
-					}
-					isPaired = true;
-					stepCntr++;
-					break;
-				}
-			}
-			if (isPaired)	dpArr[i][edge] = max(dp(i + 1, edge-stepCntr) + 2, dp(i + 1, edge));
-			else			dpArr[i][edge] = max(1, dp(i + 1, edge));
-		}
-	}
-
-	return dpArr[i][edge];
-}
 int main()
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-
-	int T; cin >> T;
-	while (T--)
+	Eriri
+	cin >> t;
+	while(u++<t)
 	{
-		memset(dpArr, 0, sizeof(dpArr));
-		cin >> s;
-		cout << dp(0, s.length()-1);
-		if (T > 0) cout << "\n";
+		cin >> s, n = s.size();
+		for (int i=0; i<n; i++) dp[0][i] = 0, dp[1][i] = 1;
+		for (int k=2; k<=n; k++)
+			for (int i=0; i+k<=n; i++)
+				dp[md(k)][i] = (s[i]==s[i+k-1]? dp[md(k-2)][i+1]+2 : max(dp[md(k-1)][i+1],dp[md(k-1)][i]));
+		cout << dp[md(n)][0] << '\n';
 	}
-	return 0;
 }

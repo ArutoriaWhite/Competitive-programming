@@ -1,46 +1,17 @@
 #include <bits/stdc++.h>
-#define de(x) cout << #x << "=" << x << ", "
-#define dend cout << '\n'
-#define Eriri ios::sync_with_stdio(0), cin.tie(0);
-#define F first
-#define S second
 using namespace std;
-typedef pair<int,int> Pii;
-const int N = 1e5;
-int to[N], from[N], val[N], r, cnt;
 
-void push_back (int x)
+int n, a[1010];
+
+int main()
 {
-    ++cnt;
-    val[cnt] = x;
-    to[r] = cnt;
-    from[cnt] = r;
-    r = cnt;
-}
-void push_front (int x)
-{
-    if (r==0) push_back(x);
-    else
+    cin >> n;
+    a[1] = 1;
+    for (int k=1; k<=n; k++)
     {
-        ++cnt;
-        val[cnt] = x;
-        to[cnt] = to[0];
-        from[to[0]] = cnt;
-        to[0] = cnt;
+        for (int i=k; i>=1; i--) a[i] = a[i]+a[i-1];
+        for (int i=0; i<n-k; i++) cout << ' ';
+        for (int i=1; i<=k; i++) cout << a[i] << ' ';
+        cout << '\n';
     }
-}
-void print()
-{
-    for (int i=0,j=to[0]; j!=0; i=j,j=to[j])
-        cout << val[j] << '\n';
-}
-void pop_back()
-{
-    to[ from[r] ] = 0;
-    r = from[r];
-}
-void pop_front()
-{
-    to[0] = to[to[0]];
-    from[to[0]] = 0;
 }

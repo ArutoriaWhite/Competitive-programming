@@ -4,46 +4,25 @@
 #define Eriri ios::sync_with_stdio(0), cin.tie(0);
 #define F first
 #define S second
-#define int long long
 using namespace std;
 typedef pair<int,int> Pii;
-const int N = 5e4+10;
+const int N = 210;
 
-Pii pos[N], tmp[N], area[N];
-int n, q;
-double res;
+int a[N][N], h[N][N], w[N], mx, my, res;
 
-inline double dis (Pii &a, Pii &b) { return sqrt((a.F-b.F)*(a.F-b.F) + (a.S-b.S)*(a.S-b.S)); }
-inline bool cmpx (Pii &a, Pii &b) { return a.F < b.F; }
-inline bool cmpy (Pii &a, Pii &b) { return a.S < b.S; }
-inline void f (int l, int r)
-{
-    if (r-l<=1) return;
-    
-    int m = (l+r)>>1, midx = pos[m].F;
-    f(l,m), f(m,r);
-    merge(pos+l,pos+m,pos+m,pos+r,tmp+l,cmpy);
-    for (int i=l; i<r; i++) pos[i] = tmp[i];
-
-    q = 0;
-    for (int i=l; i<r; i++)
-        if (abs(pos[i].F - midx) < res)
-            area[q++] = pos[i];
-    for (int i=0; i<q; i++)
-        for (int j=i-1; j>=0 && pos[i].S-pos[j].S<res; j--)
-            res = min( res, dis(pos[i],pos[j]));
-}
-
-signed main()
+int main()
 {
     Eriri
-    while (cin >> n)
-    {
-        res = 1e19;
-        for (int i=0; i<n; i++)
-            cin >> pos[i].F >> pos[i].S;
-        sort(pos,pos+n,cmpx);
-        f(0,n);
-        cout << res << '\n';    
-    }
+    cin >> my >> mx;
+    for (int y=0; y<my; y++)
+        for (int x=0; x<mx; x++)
+            cin >> a[x][y];
+    for (int x=0; x<mx; x++)
+        for (int y=my-1; y>=0; y--)
+            h[x][y] = (h[x][y+1]+1)*a[x][y];
+    for (int y=0; y<my; y++)
+        for (int k=1; k<=my; k++)
+            for (int x=1; x<=mx; x++)
+                w[x] = (w[x-1]+1)*(h[x-1][y]>=k), res = max(res, w[x]*k);
+    cout << res << '\n';
 }
