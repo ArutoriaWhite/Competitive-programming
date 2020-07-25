@@ -1,14 +1,7 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-typedef pair<int,int> Pii;
 
-double a;
-
-int main()
+int main ()
 {
-    while (cin >> a)
-    {
-        if (a == (int)a) cout << "same\n";
-        else cout << "no\n";
-    }
+	cout << 5 << '\n';
 }

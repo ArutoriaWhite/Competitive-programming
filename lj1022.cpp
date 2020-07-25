@@ -1,55 +1,57 @@
 #include <bits/stdc++.h>
 #define de(x) cout << #x << "=" << x << ", "
-#define dend cout << '\n'
+#define dd cout << '\n';
 #define Eriri ios::sync_with_stdio(0), cin.tie(0);
 #define F first
 #define S second
-#define isNum(c) ('0'<=c&&c<='9')
-#define isAlph(c) ('a'<=c&&c<='z')
 using namespace std;
 typedef pair<int,int> Pii;
 
 string s;
-int x, i, w, l, r, n;
-char un;
+int neg = 1, cons, unk, n;
+char c = '0';
 
-inline int readNum (int &i)
+inline void read (int &i) // when return ,stay i on the last position of this section 
 {
-    if (s[i]=='-'&&!isNum(s[i+1])) return -1;
-    int k = 1, res=0;
-    if (s[i]=='+') k = 1, i++;
-    else if (s[i]=='-') k = -1, i++;
-    for ( ; i<n&&isNum(s[i]); i++)
+    if (s[i] =='+' || s[i] == '-' || s[i]=='=') i++;
+    if ('a'<=s[i] && s[i] <='z')
+        unk += neg, c = s[i];
+    else
     {
-        res *= 10;
-        res += s[i]-'0';
+        int x = 0;
+        while ('0'<=s[i] && s[i]<='9')
+        {
+            x *= 10;
+            x += s[i] - '0';
+            i++;
+        }
+        if (i<n && 'a'<=s[i] && s[i]<='z')
+            unk += x*neg, c = s[i];
+        else
+        {
+            cons += x*neg*-1;
+            i--;
+        }
     }
-    return res*k;
 }
 
 int main()
 {
-    Eriri
-    cin >> s;
-    n = s.size();
-    w = 1;
-
-    while (i<n)
+    cin >> s, n = s.size();
+    for (int i=0; i<s.size(); i++)
     {
-        if (s[i] == '+' || s[i]=='-' || isNum(s[i]))
-        {
-            x = readNum(i)*w;
-            if (isAlph(s[i])) un=s[i], l += x, i++;
-            else r += -1*x;
-        }
-        else if (s[i] == '=')
-        {
-            w = -1, i++;
-        }
-        else if (isAlph(s[i]))
-        {
-            un=s[i], l += 1*w, i++;
-        }
+        if (s[i] == '=') neg *= -1;
+        else if (s[i] == '-')
+            neg *= -1, read(i), neg *= -1;
+        else
+            read(i);
+        //de(neg), de(unk), de(cons), dd
     }
-    cout << fixed << setprecision(3) << un << '=' << (double)r/l << '\n';
+    
+    cout << c << '=' << fixed << setprecision(3) << (fabs((double)cons/unk) < 1e-3? 0 : (double)cons/unk) << '\n';
 }
+
+/*
+-5a+3-2a=5-6+3a
+5a+3a=3-3+2a
+*/

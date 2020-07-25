@@ -3,6 +3,7 @@
 using namespace std;
 #define N 6
 #define M 1000000007
+#define int long long
 typedef unsigned int akagi[N][N];
 typedef unsigned int (*natori)[N];
 
@@ -60,14 +61,14 @@ inline natori qpow (int n)
     return res;
 }
 
-int main()
+signed main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
     int n;
-	while (cin >> n)
-	{
+    while (cin >> n)
+    {
         natori p = qpow(n-1);
         
         unsigned int res=0;
@@ -78,6 +79,6 @@ int main()
                 res = ((p[k][i]*fir[k])%M + res)%M;
             }
         }
-        cout << n << '\n' << res << '\n';
-	}
+        cout << res << '\n';
+    }
 }
