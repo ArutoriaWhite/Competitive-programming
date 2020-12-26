@@ -1,34 +1,32 @@
 #include <bits/stdc++.h>
-#define akiyama ios::sync_with_stdio(0), cin.tie(0);
-#define int long long
-#define exi(x,s) (s.find(x) != s.end())
-#define mem(a,x) memset(a,x,sizeof(a))
-#define pb push_back
-#define Uset unordered_set
-#define Umap unordered_map
-#define Pq priority_queue
-#define de(x) cout << #x << '=' << x << ", "
-#define dend cout << "\n"
+#define de(x) cout << #x << "=" << x << ", "
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define XinAi ios::sync_with_stdio(0), cin.tie(0);
+#define F first
+#define S second
 using namespace std;
-typedef long long ll;
-typedef pair<int,int> Pii;
-const int INF=0x7f7f7f7f, MIN = 0xc0c0c0c0, N = 1e6+10;
+typedef pair<int,int> pii;
 
-int sta[N], r, n, res;
+vector<int> st;
 
 signed main()
 {
-	akiyama;
+	XinAi
+	int n;
+	long long res=0;
 	cin >> n;
-	for (int i=0,x; i<n; i++)
+	rep(i,1,n)
 	{
+		int x;
 		cin >> x;
-		while (r>0 && sta[r-1]<x)
-			res += (r>1? min(x,sta[r-2]) : x), r--;
-		sta[r++] = x;
+		while (!st.empty() && x >= st.back())
+		{
+			res += min(x, (st.size()>1? st[st.size()-2] : (int)2e9));
+			st.pop_back();
+		}
+		st.push_back(x);
 	}
-	for (int i=r-2; i>=0; i--)
-		if (i>=0)
-			res += sta[i];
+	rep(i,0,st.size()-2) res += st[i];
 	cout << res << '\n';
 }

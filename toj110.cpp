@@ -1,54 +1,32 @@
-#define _CRT_SECURE_NO_WARNINGS
-#define _for(i,a,b) for((i)=(a);(i)<(b);(i)++)
-#define N 4
 #include <iostream>
-#include <cstdio>
-#include <string>
-#include <iomanip>
 using namespace std;
 
-int main() {
-	int T; cin >> T;
-	while (T--)
+int t, n;
+int star[1000], blank[1000];
+
+int main()
+{
+	cin >> t;
+	while (t--)
 	{
-		int i, j, n, blank, star;
 		cin >> n;
-
-		blank = n - 1;
-		star = 1;
-		_for(i, 0, n - 3) {
-			_for(j, 0, blank)
-				cout << ' ';
-			_for(j, 0, star)
-				cout << '*';
-			blank--;
-			star += 2;
-			cout << endl;
+		for (int i=1; i<1000; i++)
+			blank[i] = 1e9, star[i] = -1e9;
+		for (int i=1, b=n-1, s=1; b>=0; i++, b--, s+=2)
+		{
+			blank[i] = b;
+			star[i] = s;
 		}
-
-		_for(i, 0, 2 * n - 1)
-			cout << '*';
-		cout << endl << ' ';
-		_for(i, 0, 2 * n - 3)
-			cout << '*';
-		cout << endl;
-		_for(i, 0, 2 * n - 1)
-			cout << '*';
-		cout << endl;
-
-		blank = 3;
-		star = 2 * n - 7;
-		int tmp = n - 3;
-		_for(i, 0, tmp) {
-			_for(j, 0, blank)
-				cout << ' ';
-			_for(j, 0, star)
-				cout << '*';
-			blank++;
-			star -= 2;
-			cout << endl;
+		for (int i=2*n-3, b=n-1, s=1; b>=0; i--, b--, s+=2)
+		{
+			blank[i] = min(blank[i], b);
+			star[i] = max(star[i], s);
+		}
+		for (int i=1; i<=2*n-3; i++)
+		{
+			for (int j=1; j<=blank[i]; j++) cout << ' ';
+			for (int j=1; j<=star[i]; j++) cout << '*';
+			cout << '\n';
 		}
 	}
-return 0;
-
 }

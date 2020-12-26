@@ -1,72 +1,38 @@
-/******************************************************************************
-
-Welcome to GDB Online.
-GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
-C#, VB, Perl, Swift, Prolog, Javascript, Pascal, HTML, CSS, JS
-Code, Compile, Run and Debug online from anywhere in world.
-
-*******************************************************************************/
-#define _for(i,a,b) for(int i=(a) ;i<(b) ;i++)
-#include <stdio.h>
 #include <iostream>
-
 using namespace std;
+
+int a[10][10];
 
 int main()
 {
-    int arr[6][5];
-    bool isLine=false;
-    
-    _for(y,0,5){
-        _for(x,0,6){
-            cin>>arr[y][x];
+    for (int i=1; i<=5; i++)
+    {
+        for (int j=1; j<=6; j++)
+        {
+            cin >> a[i][j];
         }
     }
-    
-    _for(_y,0,5){
-        int lastX=-1,lastY,cntr=1;
-        _for(_x,0,6){
-            
-            if(lastX!=-1){
-                if(arr[lastY][lastX]==arr[_y][_x])
-                    cntr++;
-                else
-                    cntr=0;
+    int flag=0;
+    for (int i=1; i<=5; i++)
+    {
+        for (int j=1; j+2<=6; j++)
+        {
+            if (a[i][j] == a[i][j+1] && a[i][j] == a[i][j+2])
+            {
+                flag=1;
             }
-            if(cntr>=3){
-                isLine=true;
-                goto doubleBreak;
-            }
-            lastX=_x;lastY=_y;
-
         }
     }
-
-    doubleBreak:
-    
-    if(!isLine){
-        _for(_x_,0,6){
-        int lastX=-1,lastY,cntr=1;
-        _for(_y_,0,5){
-            
-            if(lastX!=-1){
-                if(arr[lastY][lastX]==arr[_y_][_x_])
-                    cntr++;
-                else
-                    cntr=0;
+    for (int i=1; i<=6; i++)
+    {
+        for (int j=1; j+2<=5; j++)
+        {
+            if (a[j][i] == a[j+1][i] && a[j][i] == a[j+2][i])
+            {
+                flag=1;
             }
-            if(cntr>=3){
-                isLine=true;
-                goto doubleBreak;
-            }
-            lastX=_x_;lastY=_y_;
-
         }
     }
-
-    }
-    
-    if(isLine) cout<<"Yes"<<endl;
-    else cout<<"No"<<endl;
-    return 0;
+    if (flag) cout << "Yes\n";
+    else cout << "No\n";
 }

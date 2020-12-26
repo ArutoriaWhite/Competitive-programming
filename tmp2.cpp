@@ -1,29 +1,39 @@
-#include<iostream>
+#include <bits/stdc++.h>
+#define de(x) cout << #x << "=" << x << ", "
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define SakuraMyWife ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define int long long
+#define SZ(x) ((int)x.size())
+#define pb push_back
+#define mem(a,x) memset(a,x,sizeof(a))
 using namespace std;
+typedef pair<int,int> pii;
+const int N = 3010, M = 998244353;
 
-int main()
+int dp[N][N];
+
+int f (int x, int y)
 {
-    int g;
-    cin>>g;
-    int a[g]; // 本題數據較大, 陣列移動到全域
-    for (int c=0;c<g;c++)
-    {cin>>a[c];}
-    int b[g]; // b 應該開 long long
-    
-    // b[0] 特別處理, d 從 1 開始
-    for (int d=0;d<g;d++)
-    {b[d]=b[d-1]+a[d];}
-    
-    int h;
-    cin>>h;
-    for (int l=h;l>0;l--)
-    {int e, f;
-    cin>>e>>f;
-    e=e-1;
-    f=f-1;
-    if (e>f)
-    {int t=f;f=e;e=t;} // 可以寫 swap(e,f);
-    // 如果 e == 0 要特判否則會戳到 b[-1]
-    cout<<b[f]-b[e-1]<<'\n';
+    if (x==1 && y==1) return 1;
+    if (x<=0 || y<=0) return 0;
+    if (dp[x][y]<0)
+    {
+        dp[x][y] = 0;
+        for (int i=0; (1<<i)*x<=y; i++)
+        {
+            dp[x][y] += f((1<<i)*x-1, y-1);
+            dp[x][y] %= M;
+        }
     }
+    return dp[x][y];
+}
+signed main()
+{
+    int k, x;
+    mem(dp,-1);
+    cin >> x >> k;
+    cout << f(k,x) << '\n';
 }

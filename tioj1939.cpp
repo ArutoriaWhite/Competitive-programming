@@ -1,26 +1,30 @@
 #include <bits/stdc++.h>
 #define de(x) cout << #x << "=" << x << ", "
-#define dend cout << '\n'
-#define Eriri ios::sync_with_stdio(0), cin.tie(0);
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define XinAi ios::sync_with_stdio(0), cin.tie(0);
 #define F first
 #define S second
+#define int long long
 using namespace std;
-typedef pair<int,int> Pii;
-const int N = 110;
+typedef pair<int,int> pii;
+const int N = 110, M = 1e9+9;
 
-int dp[N][2][2];
+int dp[N], dp2[N];
 
-int main()
+signed main()
 {
-    dp[1][1][1] = dp[2][1][0] = dp[2][0][1] = 1;
-    dp[2][1][1] = 2;
-    for (int i=3; i<N; i++)
+    dp[1] = dp2[1] = 1;
+    for (int i=2; i<N; i++)
     {
-        for (int j=2,k=i-1; j<i; j++,k--)
-        {
-            dp[i][1][0] += dp[j][1][1]*dp[k][1][0] + dp[j][1][0]*dp[k][0][0];
-            dp[i][0][1] += dp[j][0][1]*dp[k][1][0] + dp[j][0][0]*dp
-        }
-
+        dp[i] = ((dp[i-1]*3)%M + dp2[i-1])%M;
+        dp2[i] = (dp2[i-1] + (dp[i-1]*2)%M)%M;
+    }
+    int t, n;
+    cin >> t;
+    while (t--)
+    {
+        cin >> n;
+        cout << dp[n] << '\n';
     }
 }

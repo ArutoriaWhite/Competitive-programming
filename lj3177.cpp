@@ -1,70 +1,62 @@
 #include <bits/stdc++.h>
 #define de(x) cout << #x << "=" << x << ", "
-#define dend cout << '\n'
-#define Eriri ios::sync_with_stdio(0), cin.tie(0);
-#define F first
-#define S second
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define ShinraTensei ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define int long long
+#define SZ(x) ((int)x.size())
+#define pb push_back
+#define mem(a,x) memset(a,x,sizeof(a))
 using namespace std;
-typedef pair<int,int> Pii;
+typedef pair<int,int> pii;
 const int N = 2010;
 
-vector<int> adj[N]; 
+//dp[i][j]: i 點包含 j 個黑點可以貢獻的最大價值
+//dp[i][j] = max(dp[i][j], dp[i][j-t] + dp[v0][t] + val(i,j))
 
-int n, k;
-int sz[N], dp[N][N], w[N][N];
+vector<pii> G[N];
+int n, m;
+int dp[N][N], sz[N];
 
-void dfs (int u, int p)
+int val (int i, int j, int w)
 {
-    sz[u] = 1;
-    for (auto v: adj[u])
-        if (v!=p)
-            dfs(v,u), sz[u] += sz[v];
+    return w*(j*(m-j) + (sz[i]-j)*(n-m-sz[i]+j));
 }
-inline int val (int u, int v, int x)
+
+void dfs (int i, int p)
 {
-    int res = (x*(k-x) + (sz[v] - x)*(n-k-sz[v]+x))*w[u][v];
-    return res;
-}
-int f (int u, int h, int p)
-{
-    if (dp[u][h] == -1)
+    sz[i] = 1;
+    for (auto e: G[i])
     {
-        dp[u][h] = 0;
-        for (auto v: adj[u])
-            if (v != p)
-                for (int j=0; j<=h; j++)
-                    dp[u][h] = max(dp[u][h], f(u,j,p) + f(v,h-j,u) + val(u,v,j));
-        de(u), de(h), de(p), de(dp[u][h]), dend;
+        int v=e.ss, ww=e.ff;
+        if (v==p) continue;
+
+        dfs(v,i);
+
+        for (int a=min(m,sz[i]); a>=0; a--)
+        {
+            for (int b=min(m,sz[v]); b>=0; b--)
+            {
+                dp[i][a+b] = max(dp[i][a+b], dp[i][a]+dp[v][b]+val(v,b,ww));
+            }
+        }
+        sz[i] += sz[v];
     }
-
-    return dp[u][h];
 }
 
-int main()
+signed main()
 {
-    memset(dp,-1,sizeof(dp));
-    cin >> n >> k;
-    for (int i=0,u,v; i<n-1; i++)
+    ShinraTensei
+    cin >> n >> m;
+    for (int i=1; i<n; i++)
     {
-        cin >> u >> v >> w[u][v];
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-        w[v][u] = w[u][v];
+        int u, v, w;
+        cin >> u >> v >> w;
+        G[u].pb({w,v});
+        G[v].pb({w,u});
     }
     dfs(1,0);
-    cout << f(1,k,0) << '\n';
+    cout << max(dp[1][m],dp[1][n-m]) << '\n';
 }
-/*
-dp[u][h]
-the u-rooted tree, colored h black --> max contribution
-
-dp[u][h]
-    for (v :adj[u])
-        rep (j,0,h)
-            dp[u][h] = max(dp[u][h], dp[u][h-j] + dp[v][j] + val)
-ub = k-h
-uw = n-size[u]-k+h
-db = j
-dw = size[v]-dw
-val = ub*db*w + uw*dw*w
-*/

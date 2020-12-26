@@ -1,21 +1,15 @@
 #include<iostream>
 #include<memory.h>
 using namespace std;
-#define N 6
+#define N 3
 #define M 1000000007
 #define int long long
 typedef unsigned int akagi[N][N];
 typedef unsigned int (*natori)[N];
 
-int fir[N] = {1,1,0,1,0,0};
+int fir[N] = {};
 akagi swit =
 {
-    {1,1,0,1,0,0},
-    {1,0,1,1,0,0},
-    {1,0,0,1,0,0},
-    {0,0,0,1,1,0},
-    {0,0,0,1,0,1},
-    {0,0,0,1,0,0},
 };
 akagi ini =
 {
@@ -69,16 +63,6 @@ signed main()
     int n;
     while (cin >> n)
     {
-        natori p = qpow(n-1);
-        
-        unsigned int res=0;
-        for (int i=0; i<N; i++)
-        {
-            for (int k=0; k<N; k++)
-            {
-                res = ((p[k][i]*fir[k])%M + res)%M;
-            }
-        }
-        cout << res << '\n';
+
     }
 }

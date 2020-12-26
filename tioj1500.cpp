@@ -1,28 +1,59 @@
 #include <bits/stdc++.h>
 #define de(x) cout << #x << "=" << x << ", "
-#define dend cout << '\n'
+#define dd cout << '\n';
 #define Eriri ios::sync_with_stdio(0), cin.tie(0);
 #define F first
 #define S second
 using namespace std;
 typedef pair<int,int> Pii;
-const int N = 210;
+const int N = 5e4+10;
 
-int a[N][N], h[N][N], w[N], mx, my, res;
+int n;
+double res = 2e18;
+Pii p[N];
+
+double dis (Pii a, Pii b)
+{
+    double x1 = a.F, x2 = b.F, y1 = a.S, y2 = b.S;
+    return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+}
+void f (int l, int r)
+{
+    if (l>=r) return;
+    if (r-l==1)
+    {
+        res = min(res, dis(p[l],p[r]));
+        return;
+    }
+    int m = (l+r)/2;
+    f(l,m);
+    f(m+1,r);
+    vector<Pii> v;
+    for (int i=m; i>=l; i--)
+        if (p[m].F - p[i].F > res) break;
+        else v.push_back(p[i]);
+    for (int i=m+1; i<=r; i++)
+        if (p[i].F - p[i].F > res) break;
+        else v.push_back(p[i]);
+    sort(v.begin(), v.end(), [](Pii a, Pii b){return a.S < b.S;});
+    for (int i=0; i<v.size(); i++)
+        for (int j=i+1; j<v.size(); j++)
+        {
+            if (v[j].S - v[i].S > res) break;
+            res = min(res, dis(v[i], v[j]));
+        }
+}
 
 int main()
 {
     Eriri
-    cin >> my >> mx;
-    for (int y=0; y<my; y++)
-        for (int x=0; x<mx; x++)
-            cin >> a[x][y];
-    for (int x=0; x<mx; x++)
-        for (int y=my-1; y>=0; y--)
-            h[x][y] = (h[x][y+1]+1)*a[x][y];
-    for (int y=0; y<my; y++)
-        for (int k=1; k<=my; k++)
-            for (int x=1; x<=mx; x++)
-                w[x] = (w[x-1]+1)*(h[x-1][y]>=k), res = max(res, w[x]*k);
-    cout << res << '\n';
+    while (cin >> n)
+    {
+        res = 2e19;
+        for (int i=1; i<=n; i++)
+            cin >> p[i].F >> p[i].S;
+        sort(p+1, p+1+n);
+        f(1,n);
+        cout << fixed << setprecision(6) << res << '\n';        
+    }
 }
