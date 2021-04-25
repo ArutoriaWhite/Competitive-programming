@@ -24,7 +24,7 @@ void dfs (int u)
     {
         int w = W[v];
         dfs(v);
-        dp[u] += dp[v] + (sz[v]*(n-sz[v]))*w;
+        dp[u] += dp[v] + (sz[v]*(n-sz[v]));
         sz[u] += sz[v];
     }
 }

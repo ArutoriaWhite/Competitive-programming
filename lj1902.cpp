@@ -1,51 +1,60 @@
 #include <bits/stdc++.h>
-#define de(x) cout << #x << "=" << x << ", "
-#define dd cout << '\n';
-#define XinAi ios::sync_with_stdio(0), cin.tie(0);
-#define F first
-#define S second
 #define int long long
+#define de(x) cout << #x << '=' << x << ", "
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define pui ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define pb push_back
 using namespace std;
 typedef pair<int,int> pii;
 const int N = 1010;
 
-queue<int> qx, qy, qd;
-int a[N][N], dis[N][N], mx, my;
+int G[N][N], n, m;
+int vis[N][N], sh[][2] = {{1,0},{-1,0},{0,1},{0,-1}}, lim;
 
-void bfs()
+inline void dfs (int r, int c)
 {
-    for (int x=1; x<=mx; x++)
-        qx.push(x), qy.push(1), qd.push(a[x][1]), dis[x][1] = a[x][1];
-    while (!qd.empty())
-    {
-        int x = qx.front(), y = qy.front(), d = qd.front();
-        qx.pop(), qy.pop(), qd.pop();
-        if (dis[x][y] < d) continue;
-        for (int i=-1; i<=1; i++)
-        {
-            for (int j=-1; j<=1; j++)
-            {
-                if (!(i||j) || !(!i || !j)) continue;
-                int vx = x+i, vy = y+j;
-                if (vx<1 || vy<1 || vx>mx || vy>my) continue;
-                d = max(d, a[vx][vy]);
-                if (d < dis[vx][vy])
-                    dis[vx][vy] = d, qx.push(vx), qy.push(vy), qd.push(d);
-            }
-        }
-    }
+	if (r>n || r<1 || c>m || c<1) return;
+	if (vis[r][c] || G[r][c]>lim) return;
+
+	vis[r][c] = 1;
+
+	for (int i=0; i<4; i++)
+	{
+		int nr = r+sh[i][0];
+		int nc = c+sh[i][1];
+		dfs(nr,nc);
+	}
+}
+inline int check (int l)
+{
+	memset(vis,0,sizeof(vis));
+	lim = l;
+	rep(i,1,m) dfs(1,i);
+	rep(i,1,m)
+		if (!vis[n][i])
+			return 0;
+	return 1;
+}
+
+inline int bs()
+{
+	int i=-1, s=1010;
+	while (s > 0)
+	{
+		if (check(i+s)) s>>=1;
+		else i+=s;
+	}
+	return i+1;
 }
 
 signed main()
 {
-    XinAi
-    cin >> my >> mx;
-    for (int y=1; y<=my; y++)
-        for (int x=1; x<=mx; x++)
-            cin >> a[x][y];
-    memset(dis, 0x3f, sizeof(dis));
-    bfs();
-    int res = 0x3f3f3f3f;
-    for (int x=1; x<=mx; x++) res = min(res, dis[x][my-1]);
-    cout << res << '\n';
+	cin >> n >> m;
+	rep(i,1,n)
+		rep(j,1,m)
+			cin >> G[i][j];
+	cout << bs() << '\n';
 }

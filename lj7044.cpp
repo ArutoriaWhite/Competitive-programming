@@ -11,36 +11,44 @@
 #define mem(a,x) memset(a,x,sizeof(a))
 using namespace std;
 typedef pair<int,int> pii;
-const int N = 20;
+/*
+dp[i][j][k] = 
+    enum i..j as l
+        enum l..j as r
+            dp[i][j][k] += dp[l][r][k-1];
 
-int cnt[N][N];
+k 級分值，計算每個字串
+*/
+const int N = 100;
+int cnt[N][N], n, k, O;
 
 void calc (int l, int r, int k)
 {
-    if (k==0) cnt[l][r]++;
-    else
+    O++;
+    if (k==0)
     {
-        for (int i=l; i<r; i++)
+        cnt[l][r]++;
+        return;
+    }
+    for (int i=l; i<=r; i++)
+    {
+        for (int j=i; j<=r; j++)
         {
-            for (int j=l+1; j<=r; j++)
-            {
-                calc(i,j,k-1);
-            }
+            calc(i,j,k-1);
         }
     }
 }
-
 signed main()
 {
-    int n, k;
     cin >> n >> k;
-    calc(0,n,k);
-    for (int i=1; i<=n; i++)
+    calc(0,n-1,k);
+    for (int i=0; i<n; i++)
     {
-        for (int j=0; j+i<=n; j++)
+        for (int l=0,r=i; r<n; l++,r++)
         {
-            de(j), de(j+i), de(cnt[j][j+i]), dd;
+            de(l), de(r), de(cnt[l][r]), dd;
         }
-        dd;
     }
+    de(O), dd;
 }
+

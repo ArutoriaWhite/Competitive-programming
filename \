@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+#define int long long 
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define de(x) cout << #x << '=' << x << ", "
+#define dd cout << '\n';
+#define endl '\n'
+#define ff first
+#define ss second
+#define pui ios::sync_with_stdio(0), cin.tie(0);
+#define pb push_back
+#define double long double
+using namespace std;
+typedef pair<int,int> pii;
+
+const int N = 2e5+10;
+const double EPS = 1e-8;
+
+int n, T;
+pii a[N]; //{temp, x}
+int xsum[N], xtsum[N];
+
+void build()
+{
+	rep(i,1,n)
+	{
+		xsum[i] = xsum[i-1] + a[i].ss;
+		xtsum[i] = xtsum[i-1] + a[i].ff*a[i].ss;
+	}
+}
+int calc (int l, int r, double p=0, double q=0)
+{
+	if (l>r) return q > 1.0*T*p;
+	return (xtsum[r]-xtsum[l-1]+q) > 1.0*T*(xsum[r]-xsum[l-1]+p);
+}
+double bs1 (int i) // find max p such that 1..i-1, p of i, calc 0
+{
+	double p=0, s=a[i].ss;
+	while (s > EPS)
+	{
+		de(p), de(s), de(calc(1,i-1,p,p*a[i].ff)), dd
+		if (!calc(1,i-1,(p+s),(p+s)*a[i].ff)) p += s;
+		else s /= 2;
+	}	
+	return p;
+}
+double bs2 (int i)
+{
+	int p=0, s=a[i].ss;
+	while (s > EPS)
+	{
+		de(p), dd
+		if (calc(i+1,n,p,p*a[i].ff)) p += s;
+		else s /= 2;
+	}
+	return p;
+}
+
+signed main()
+{
+	cin >> n >> T;
+	rep(i,1,n) cin >> a[i].ss;
+	rep(i,1,n) cin >> a[i].ff;
+	
+	sort(a+1,a+1+n); // sort by temperature
+	build();
+
+	double ans;
+	if (calc(1,n,0,0))
+	{
+		int i=1;
+		while (!calc(1,i)) i++;
+		de(i), dd
+		double q = bs1(i);
+		ans = xsum[i-1] + q;
+	}
+	else
+	{
+		int i=n;
+		while (calc(i,n)) i--;
+		double q = bs2(i);
+		ans = xsum[n]-xsum[i] + q;
+	}
+	cout << fixed << setprecision(6) << ans << endl;
+}
+

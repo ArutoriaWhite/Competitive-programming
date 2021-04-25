@@ -1,0 +1,89 @@
+#include <bits/stdc++.h>
+#define int long long
+#define de(x) cout << #x << '=' << x << ", "
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define pui ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define pb push_back
+using namespace std;
+typedef pair<int,int> pii;
+
+const int N = 70, V = 51, P = 3333331, P2 = 0xdefaced, A = 5e5+10;
+
+int cnt[V], n, cap, total, vis[P], dp[P];
+
+inline int qpow (int i, int j)
+{
+	int res = 1;
+	for (; j; j>>=1,i=i*i%P)
+		if (j&1) 
+			res = (res*i)%P;
+	return res;
+}
+inline int getHash()
+{
+	int res = 0;
+	rep(i,1,50)
+		res = (res+cnt[i]*qpow(P2,i)%P)%P;
+	return res;
+}
+
+int dfs (int sum = 0)
+{
+	int h = getHash();
+	if (!vis[h])
+	{
+		vis[h] = 1;
+		rep(i,1,50)
+		{
+			if (cnt[i] > 0 && i+sum<=cap)
+			{
+				cnt[i]--;
+				dp[h] |= dfs((i+sum==cap? 0:i+sum));
+				cnt[i]++;
+				if (dp[h]) break;
+			}
+		}
+	}
+	return dp[h];
+}
+
+signed main()
+{
+	pui	
+	int total = 0, mx = 0;
+	cin >> n;
+	rep(i,1,n)
+	{
+		int x; cin >> x;
+		if (x <= 50)
+		{
+			total += x;
+			mx =  max(mx, x);
+			cnt[x]++;
+		}
+	}
+	// legal capacity
+	// 1. totol_weight % i == 0
+	// 2. i > min 
+	// 3. i >= mx
+	// 4. i <= total/2
+	rep(i,mx,total/2)
+	{
+		if (total%i == 0)
+		{
+			cap = i;
+			memset(vis,0,sizeof(vis));
+			memset(dp,0,sizeof(dp));
+			vis[0] = dp[0] = 1;
+			if (dfs())
+			{
+				cout << i << '\n';
+				return 0;
+			}
+		}
+	}
+	cout << total << '\n';
+}

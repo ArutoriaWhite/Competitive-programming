@@ -1,99 +1,101 @@
 #include <bits/stdc++.h>
-#define akiyama ios::sync_with_stdio(0), cin.tie(0);
-#define exi(x,s) (s.find(x) != s.end())
-#define mem(a,x) memset(a,x,sizeof(a))
-#define pb push_back
-#define Uset unordered_set
-#define Umap unordered_map
-#define Pq priority_queue
+#define int long long
 #define de(x) cout << #x << '=' << x << ", "
-#define dend cout << "\n"
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define pui ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define pb push_back
 using namespace std;
-typedef long long ll;
-typedef pair<int,int> Pii;
-const int INF=0x7f7f7f7f, MIN = 0xc0c0c0c0, N = 9;
+typedef pair<int,int> pii;
 
-int toi[200], G[N][N], sol[N][N], hor[N], ver[N], blo[3][3];
-string ch;
+/*
+   
+dfs state: 
+1. bitset<9> blo[9]
+2. bitset<9> row[9]
+3. bitset<9> col[9]
+4. i: position id, i/9 = row, i%9 = col, row/3, col/3, i/9/3*3+(i%9)/3
 
-inline void init()
+1. build init blo, row, col
+2. dfs (0)
+	if (i == 81)
+		print
+		exit(0)
+	if (is empty)
+		dfs(0~9)
+	else
+		dfs(i+1)
+*/
+
+bitset<9> blo[9], row[9], col[9];
+int G[81], Gt[81];
+string toc = "ROYGBIPLW";
+int toi [200];
+
+inline int gRow (int i){ return i/9; }
+inline int gCol (int i){ return i%9; }
+inline int gBlo (int i){ return i/9/3*3+(i%9)/3; }
+
+inline int legal (int i, int x)
 {
-	ch = "ROYGBIPLW*";
-	for (int i=0; i<10; i++)
-		toi[ch[i]] = i;
+	return blo[gBlo(i)][x]==0 && row[gRow(i)][x]==0 && col[gCol(i)][x]==0;
 }
-inline void add (int x, int y, int k)
+inline void fill (int i, int x)
 {
-	sol[x][y] = k;
-	hor[y] |= (1<<k);
-	ver[x] |= (1<<k);
-	blo[x/3][y/3] |= (1<<k);
+	blo[gBlo(i)][x] = 1;
+	row[gRow(i)][x] = 1;
+	col[gCol(i)][x] = 1;
+	G[i] = x;
 }
-inline void del (int x, int y, int k)
+inline void unfill (int i, int x)
 {
-	hor[y] -= (1<<k);
-	ver[x] -= (1<<k);
-	blo[x/3][y/3] -= (1<<k);
+	blo[gBlo(i)][x] = 0;
+	row[gRow(i)][x] = 0;
+	col[gCol(i)][x] = 0;
+	G[i] = -1;
 }
-inline bool can (int x, int y, int k)
+void print()
 {
-	return !((hor[y]|ver[x]|blo[x/3][y/3])&(1<<k));
-}
-inline void print_sol()
-{
-	int all_fir=1;
-	for (int y=0; y<N; y++)
+	for (int i=0; i<81; i++)
 	{
-		bool fir=1;
-		for (int x=0; x<N; x++)
+		if (Gt[i]) cout << toc[G[i]];
+		if ((i+1)%9==0) cout << '\n';
+	}
+}
+
+void dfs (int i=0)
+{
+	if (i == 81)
+	{
+		print();
+		exit(0);
+	}
+	if (G[i] < 0)
+	{
+		for (int x=0; x<9; x++)
 		{
-			if (G[x][y]==N)
+			if (legal(i,x))
 			{
-				if(fir)
-				{
-					if (!all_fir) cout << '\n';
-					fir = all_fir = 0;
-				}
-				cout << ch[sol[x][y]];
+				fill(i,x);
+				dfs(i+1);
+				unfill(i,x);
 			}
 		}
 	}
+	else dfs(i+1);
 }
 
-bool dfs (int d)
+signed main()
 {
-	if (d==N*N)
-	{
-		print_sol();
-		return 1;
-	}
-	int x = d%N, y=d/N;
-	if (G[x][y]!=N)
-		return dfs(d+1);
-	for (int i=0; i<N; i++)
-	{
-		if (can(x,y,i))
-		{
-			add(x,y,i);
-			if (dfs(d+1)) return 1;
-			del(x,y,i);
-		}
-	}
-	return 0;
-}
+	for (int i=0; i<9; i++) toi[toc[i]] = i;
 
-int main()
-{
-	akiyama;
-	init();
-	char c;
-	for (int y=0; y<N; y++)
-		for (int x=0; x<N; x++)
-		{
-			cin >> c;
-			G[x][y] = toi[c];
-			if (G[x][y] < N)
-				add(x,y,G[x][y]);
-		}
+	for (int i=0; i<81; i++)
+	{
+		char c; cin >> c;
+		if (c != '*') fill(i,toi[c]);
+		else Gt[i] = 1, G[i] = -1;
+	}
 	dfs(0);
 }

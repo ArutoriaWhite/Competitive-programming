@@ -1,21 +1,30 @@
 #include <bits/stdc++.h>
-#define de(x) cout << #x << "=" << x << ", "
-#define dd cout << '\n';
+#define int long long
+#define de(x) cout << #x << '=' << x << ", "
+#define dd cout << endl;
+#define endl '\n'
+#define pui ios::sync_with_stdio(0), cin.tie(0);
 #define rep(i,j,k) for (int i=j; i<=k; i++)
-#define ShinraTensei ios::sync_with_stdio(0), cin.tie(0);
 #define ff first
 #define ss second
-#define int long long
-#define SZ(x) ((int)x.size())
 #define pb push_back
-#define mem(a,x) memset(a,x,sizeof(a))
 using namespace std;
 typedef pair<int,int> pii;
 
-int a[1];
+ int add (int a, int b)
+{
+	do
+	{
+		int tmp = a&b;
+		a = a^b;
+		b = tmp<<1;
+	} while (b);
+	return a;
+}
 
 signed main()
 {
-	mem(a,0x7f);
-	cout << a[0] << '\n';
+	int a, b;
+	cin >> a >> b;
+	cout << add(a,b) << endl;
 }

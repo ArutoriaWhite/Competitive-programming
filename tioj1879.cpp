@@ -13,53 +13,63 @@ using namespace std;
 typedef pair<int,int> pii;
 const int N = 1e4+10;
 
-vector<int> G[N], st;
-vector<int> group[N];
-int low[N], dep[N], bcc, tt;
+vector<int> G[N], To, grp[N], st;
+int low[N], dep[N], bcc, tstamp;
 int n, m;
 
-void dfs (int u, int fa)
+void dfs (int u, int p)
 {
-	dep[u] = ++tt;
-	low[u] = dep[u];
+	dep[u] = low[u] = ++tstamp;
 	st.pb(u);
-	for (auto v: G[u])
+	
+	for (auto eid: G[u])
 	{
-		if (v != fa);
-		if (!dep[v])
-		{
-			dfs(v,u);
-			low[u] = min(low[u], low[v]);
-		}
-		else
+		if ((eid^1) == p) continue;
+
+		int v = To[eid];
+		
+		if (dep[v])
 		{
 			low[u] = min(low[u], dep[v]);
 		}
+		else
+		{
+			dfs(v,eid);
+			low[u] = min(low[u], low[v]);
+		}
 	}
-	if (low[u]==dep[u])
+
+	if (low[u] == dep[u])
 	{
-		bcc++;
-		for (int x=0; x!=u; group[bcc].pb(x))
-			x = st.back(), st.pop_back();
+		++bcc;
+		for (int x=-1; x!=u; st.pop_back())
+		{
+			x = st.back();
+			grp[bcc].pb(x);
+		}
+		sort(grp[bcc].begin(), grp[bcc].end());
 	}
 }
 
 signed main()
 {
 	cin >> n >> m;
-	rep(i,1,m)
+	while (m--)
 	{
 		int u, v;
 		cin >> u >> v;
-		G[u].pb(v);
-		G[v].pb(u);
+		G[u].pb(To.size()), To.pb(v);
+		G[v].pb(To.size()), To.pb(u);
 	}
-	dfs(1,0);
+
+	dfs(0,-1);
+
+	sort(grp+1, grp+1+bcc);
 	rep(i,1,bcc)
 	{
-		cout << i << ":";
-		sort(group[i].begin(), group[i].end());
-		for (auto v: group[i]) cout << ' ' << v;
+		cout << i << ':';
+		for (auto x: grp[i])
+			cout << ' ' << x;
 		cout << '\n';
 	}
 }

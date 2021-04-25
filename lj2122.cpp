@@ -13,92 +13,115 @@ using namespace std;
 typedef pair<int,int> pii;
 const int N = 1e5+10;
 
+int n, m;
 struct ST
 {
-	int sum[N<<1], sqsum[N<<1];
-	int lz[N<<1];
-	void build()
-	{
-		for (int i=0; i<n; i++)
-		{
-			sum[i+n] = a[i];
-			sqsum[i+n] = a[i]*a[i];
-		}
-		for (int i=n-1; i>0; i--)
-		{
-			sum[i] = sum[i<<1] + sum[i<<1|1];
-			sqsum[i] = sqsum[i<<1] + sqsum[i<<1|1];
-		}
-	}
-	void add_tag (int u, int x)
-	{
+	int sq[N<<1], sum[N<<1], len[N<<1], tag[N<<1];
 
-	}
-	void push (int p) // move tag to son and clear self's tag
+	// make whole parent of p replace their lazy operation to son
+	void push (int p) 
 	{
-		for (int h=__lg(p); h>=0; h--)
+		for (int h=__lg(p); h>0; h--)
 		{
-			int i = p>>h;
-			add_tag(i<<1, lz[i]);
-			add_tag(i<<1|1,lz[i]);
-			lz[i] = 0;
+			int x = p>>h;
+			if (!tag[x]) continue;
+			upd(x<<1, tag[x]);
+			upd(x<<1|1,tag[x]);
+			tag[x] = 0;
 		}
 	}
-	void pull (int p) // when sun change, update itself's value by son
+	// before use must determine that fathers tag has been cleard
+	// update modified nodes's parent
+	void pull (int p)
 	{
 		while (p>1)
 		{
-			sum[p>>1] = sum[p] + sum[p^1];
-			qsum[p>>1] = qsum[p] + qsum[p^1];
+			sq[p>>1] = sq[p]+sq[p^1];
+			sum[p>>1] = sum[p]+sum[p^1];
+			p>>=1;
 		}
 	}
-	void modify (int l, int r, int x) // find max legal range node and update value, add tag
+	// apply one tag on a node
+	void upd (int p, int x)
 	{
-		push(l+n), push(r+n);
-		for (int tl=l+n,tr=r+n; tl<tr; tl>>=1,tr>>=1)
+		tag[p] += x;
+		sq[p] += 2*x*sum[p];
+		sq[p] += x*x*len[p];
+		sum[p] += len[p]*x;
+	}
+	void build ()
+	{
+		for (int i=0; i<n; i++)
 		{
-			
+			cin >> sum[i+n];
+			sq[i+n] = sum[i+n]*sum[i+n];
+			len[i+n] = 1;
 		}
-		pull(l+n), pull(r+n);
+		for (int i=n-1; i>0; i--)
+		{
+			len[i] = len[i<<1] + len[i<<1|1];
+			sq[i] = sq[i<<1] + sq[i<<1|1];
+			sum[i] = sum[i<<1] + sum[i<<1|1];
+		}
 	}
-	// make all node relation with range change to their true value, then answer
-	void query (int l, int r, int x, int *tr)
+	void modify (int l, int r, int x)
 	{
-		
+		l+=n, r+=n;
+		push(l), push(r);
+		for (int tl=l,tr=r; tl<tr; tl>>=1,tr>>=1)
+		{
+			if (tl&1) upd(tl++,x);
+			if (tr&1) upd(--tr,x);
+		}
+		push(l), push(r);
+		pull(l), pull(r);
+	}
+	int query (int *tree, int l, int r)
+	{
+		int res=0;
+		l+=n, r+=n;
+		push(l), push(r);
+		for (int tl=l,tr=r; tl<tr; tl>>=1,tr>>=1)
+		{
+			if (tl&1) res += tree[tl++];
+			if (tr&1) res += tree[--tr];
+		}
+		return res;
 	}
 } st;
 
-pii beautiful (int x, int y)
+pii beauti (int x, int y)
 {
 	return {x/__gcd(x,y), y/__gcd(x,y)};
 }
-
 signed main()
 {
+	ShinraTensei
 	cin >> n >> m;
-	rep(i,1,n) cin >> a[i-1];
 	st.build();
 	while (m--)
 	{
-		int o, l, r, x;
+		int o, l, r, x, k;
 		cin >> o >> l >> r;
 		l--;
+		k = r-l;
 		if (o==1)
 		{
 			cin >> x;
 			st.modify(l,r,x);
 		}
-		if (o==2)
+		else if (o==2)
 		{
-			int rsum = st.query(l,r,st.sum);
-			pii res = beautiful(rsum,r-l);
-			cout << res << '\n';
+			int sum = st.query(st.sum, l, r);
+			pii res = beauti(sum, k);
+			cout << res.ff << '/' << res.ss << '\n';
 		}
-		if (o==3)
+		else 
 		{
-			int rsum = st.query(l,r,st.sum);
-			int rsqsum = st.query(l,r,st.sqsum);
-			pii res = beautiful(rsum*(r-l) - rsqsum, (r-l)*(r-l));
+			int sqsum = st.query(st.sq, l, r);
+			int sum = st.query(st.sum, l, r);
+			pii res = beauti(k*sqsum - sum*sum, k*k);
+			cout << res.ff << '/' << res.ss << '\n';
 		}
 	}
 }

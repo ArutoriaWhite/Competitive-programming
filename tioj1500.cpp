@@ -1,59 +1,79 @@
 #include <bits/stdc++.h>
-#define de(x) cout << #x << "=" << x << ", "
+#define int long long
+#define de(x) cout << #x << '=' << x << ", "
 #define dd cout << '\n';
-#define Eriri ios::sync_with_stdio(0), cin.tie(0);
-#define F first
-#define S second
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define pui ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define pb push_back
 using namespace std;
-typedef pair<int,int> Pii;
-const int N = 5e4+10;
+typedef pair<int,int> pii;
+typedef long double ld;
 
+const int N = 2e5+10;
+
+pii a[N], tmp[N];
 int n;
-double res = 2e18;
-Pii p[N];
 
-double dis (Pii a, Pii b)
+inline int cmp (pii i, pii j)
 {
-    double x1 = a.F, x2 = b.F, y1 = a.S, y2 = b.S;
-    return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-}
-void f (int l, int r)
-{
-    if (l>=r) return;
-    if (r-l==1)
-    {
-        res = min(res, dis(p[l],p[r]));
-        return;
-    }
-    int m = (l+r)/2;
-    f(l,m);
-    f(m+1,r);
-    vector<Pii> v;
-    for (int i=m; i>=l; i--)
-        if (p[m].F - p[i].F > res) break;
-        else v.push_back(p[i]);
-    for (int i=m+1; i<=r; i++)
-        if (p[i].F - p[i].F > res) break;
-        else v.push_back(p[i]);
-    sort(v.begin(), v.end(), [](Pii a, Pii b){return a.S < b.S;});
-    for (int i=0; i<v.size(); i++)
-        for (int j=i+1; j<v.size(); j++)
-        {
-            if (v[j].S - v[i].S > res) break;
-            res = min(res, dis(v[i], v[j]));
-        }
+	return i.ss < j.ss;
 }
 
-int main()
+ld dis (pii i, pii j)
 {
-    Eriri
-    while (cin >> n)
-    {
-        res = 2e19;
-        for (int i=1; i<=n; i++)
-            cin >> p[i].F >> p[i].S;
-        sort(p+1, p+1+n);
-        f(1,n);
-        cout << fixed << setprecision(6) << res << '\n';        
-    }
+	return sqrt((i.ff-j.ff)*(ld)(i.ff-j.ff) + (i.ss-j.ss)*(ld)(i.ss-j.ss));
+}
+
+ld solve (int l, int r)
+{
+	if (r-l+1 <= 3)
+	{
+		ld ans = 9e30;
+		rep(i,l,r)
+			rep(j,i+1,r)
+				ans = min(ans, dis(a[i],a[j]));
+		sort(a+l,a+r+1,cmp);
+		return ans;
+	}
+
+	int mid = (l+r)/2;
+	int midx = a[mid].ff;	
+	ld ans = min(solve(l,mid), solve(mid+1,r));
+	vector<pii> L, R;
+	rep(i,l,mid)
+		if (midx - a[i].ff < ans)
+			L.pb(a[i]);
+	rep(i,mid+1,r)
+		if (a[i].ff - midx < ans)
+			R.pb(a[i]);
+	int lb = 0;
+	for (auto p: L)
+	{
+		while (lb<R.size() && R[lb].ss < p.ss - ans) lb++;
+		for (int i=lb; i<R.size()&&R[i].ss<=p.ss+ans; i++)
+			if (ans > dis(p,R[i]))
+				ans = dis(p,R[i]);
+	}
+	
+	merge(a+l,a+mid+1,a+mid+1,a+r+1,tmp+l,cmp);
+	rep(i,l,r) a[i] = tmp[i];
+
+	return ans;	
+}
+
+signed main()
+{
+	pui
+	while (cin >> n)
+	{
+		rep(i,1,n)
+		{
+			signed p, q; cin >> p >> q;
+			a[i].ff = p, a[i].ss = q;
+		}
+		sort(a+1,a+1+n);
+		cout << fixed << setprecision(6) << solve(1,n) << '\n';
+	}
 }

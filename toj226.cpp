@@ -1,49 +1,34 @@
-#define _for(i,a,b) for(int i=(a);i<(b);i++)
-#include <iostream>
-#include <stdio.h>
-#include <algorithm>
-#include <map>
-#include <vector>
+#include <bits/stdc++.h>
+#define de(x) cout << #x << "=" << x << ", "
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define ShinraTensei ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define int long long
+#define SZ(x) ((int)x.size())
+#define pb push_back
+#define mem(a,x) memset(a,x,sizeof(a))
 using namespace std;
+typedef pair<int,int> pii;
 
-int main ()
+signed main()
 {
-    //freopen("in.txt","r",stdin);
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+    int T;
+    cin >> T;
+    while (T--)
+    
+    {
+        string s;
+        cin >> s;
+        int tot=0;
+        for (int i=0; i<s.size(); i++)
+            tot += s[i]-'0';
+        sort(s.begin(), s.end());
+        reverse(s.begin(), s.end());
 
-    long long T;cin>>T;
-    while(T--){
-
-        vector<int> numsArray;
-        long long n; cin>>n;
-        long long sum=0;
-        long long tmpN=n;
-        bool isMutiple=false,hasZero=false;
-
-
-        while(tmpN>0){
-            int tmp=tmpN%10;
-            tmpN/=10;
-            if(tmp==0) hasZero=true;
-            numsArray.push_back(tmp);
-            sum=(sum+tmp%3)%3;
-        }
-        if(sum%3==0 && hasZero) isMutiple=true;
-
-        if(isMutiple){
-            sort(numsArray.begin(),numsArray.end());
-            reverse(numsArray.begin(),numsArray.end());
-            for(auto x:numsArray)
-                cout<<x;
-        }
-        else{
-            cout<<-1;
-        }
-        if(T>0) cout<<"\n";
-
+        if (s[s.size()-1] == '0' && tot%3==0)
+            cout << s << '\n';
+        else cout << -1 << '\n';
     }
-
-    return 0;
 }
-

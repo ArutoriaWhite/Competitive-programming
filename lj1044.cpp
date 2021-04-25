@@ -1,14 +1,16 @@
-#include <bits/stdc++.h>
-#define de(x) cout << #x << "=" << x << ", "
-#define dd cout << '\n';
-#define rep(i,j,k) for (int i=j; i<=k; i++)
-#define SakuraMyWife ios::sync_with_stdio(0), cin.tie(0);
-#define ff first
-#define ss second
-#define int long long
-#define SZ(x) ((int)x.size())
-#define pb push_back
-#define mem(a,x) memset(a,x,sizeof(a))
+#include <iostream>
 using namespace std;
-typedef pair<int,int> pii;
-const int N = 
+const int N = 5010, M = 1e9+7;
+
+int n;
+long long dp[N];
+
+signed main()
+{
+    cin >> n;
+    dp[0] = 1;
+    for (int i=1; i<=n; i++)
+        for (int j=0,k=i-1; j<i; j++,k--)
+            dp[i] = (dp[i]+dp[j]*dp[k]%M)%M;
+    cout << dp[n] << '\n';
+}

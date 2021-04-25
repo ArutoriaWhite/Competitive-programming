@@ -1,0 +1,119 @@
+#include <bits/stdc++.h>
+#define int long long
+#define de(x) cout << #x << '=' << x << ", "
+#define dd cout << '\n';
+#define rep(i,j,k) for (int i=j; i<=k; i++)
+#define pui ios::sync_with_stdio(0), cin.tie(0);
+#define ff first
+#define ss second
+#define pb push_back
+using namespace std;
+typedef pair<int,int> pii;
+
+const int N =  1e4+10, Q = 110, V = 1e7+10;
+
+vector<pii> G[N];
+int q[Q], ans[Q], del[N];
+int n, m;
+
+vector<int> dis;
+int apr[N], ucnt;
+
+int dp[N], sz[N];
+void findSZ (int u, int fa) // calc size of u-root tree
+{
+	sz[u] = 1;
+	for (auto e: G[u])
+	{
+		int v = e.ff;
+		if (del[v] || v == fa) continue;
+		findSZ(v,u);
+		sz[u] += sz[v];
+	}
+}
+void findDP (int u, int fa, int S, int &rt) //dp[i]: min subtree size in my sons and parent
+{
+	// choose min size, if my dp is less let dp to myself
+	dp[u] = 0;	
+	for (auto e: G[u])
+	{
+		int v = e.ff;
+		if (del[v] || v == fa) continue;
+		findDP(v,u,S,rt);
+
+		dp[u] = max(dp[u], sz[v]);	
+	}
+	dp[u] = max(dp[u], S-sz[u]);
+	if (dp[rt] > dp[u])
+		rt = u;
+}
+int getRoot (int u)
+{
+	findSZ(u,0);
+	int rt = 0; dp[rt] = 1e9;
+	findDP(u,0,sz[u],rt);
+	de(rt), dd;
+	return rt;
+}
+
+void getDis (int u, int fa, int len)
+{
+	dis.pb(len);
+	for (auto e: G[u])
+	{
+		int v = e.ff;
+		int w = e.ss;
+		
+		if (del[v] || v == fa) continue;
+		getDis(v,u,len+w);
+	}
+}
+
+void solve (int u)
+{
+	del[u] = 1;
+
+	apr[0] = ++ucnt;
+	for (auto e: G[u])
+	{
+		int v = e.ff;
+		int w = e.ss;
+		
+		if (del[v]) continue;
+
+		dis.clear();
+		getDis(v,u,w);
+		for (auto d: dis)
+			rep(i,1,m)
+				if (d <= q[i] && apr[q[i]-d])
+					ans[i] = ucnt;
+		for (auto d: dis)
+			apr[d] = ucnt;
+	}
+
+	for (auto e: G[u])
+	{
+		int v = e.ff;
+		if (del[v]) continue;
+		solve(getRoot(v));
+	}
+}
+
+signed main()
+{
+	cin >> n >> m;
+	rep(i,2,n)
+	{
+		int u, v, w;
+		cin >> u >> v >> w;
+		G[u].pb({v,w});
+		G[v].pb({u,w});
+	}
+	rep(i,1,m)
+		cin >> q[i];
+
+	solve(getRoot(1));
+
+	rep(i,1,m)
+		cout << (ans[i]? "AYE":"NAY") << '\n';
+}
