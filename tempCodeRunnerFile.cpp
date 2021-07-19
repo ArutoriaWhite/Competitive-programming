@@ -1,1 +1,1 @@
-for (auto x: v) de(x); dd
+dp[i][a[i]-a[j]+M] = 1;
